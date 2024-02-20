@@ -1,0 +1,5 @@
+npx create-expo-app BloodnHeartApp
+npm i --dev tailwindcss@3.3.2
+npm i nativewind
+npx tailwindcss init
+npx expo install react-native-gesture-handler
