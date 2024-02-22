@@ -23,6 +23,7 @@ const SignUpScreen = () => {
             password: password,
             email: email
         };
+        console.log('cccd', cccd);
         const repw = repassword;
         // dispatch(registerStart());
         if (isEmpty(repassword)) {
@@ -33,14 +34,14 @@ const SignUpScreen = () => {
         } else {
             if (repw == newUser.password) {
                 try {
-                    // const response = await fetch('http://172.30.240.1:8000/v1/auth/register', {
-                    //     method: 'POST',
-                    //     body: JSON.stringify(newUser),
-                    //     headers: {
-                    //         'Content-Type': 'application/json'
-                    //     }
-                    // });
-                    const response = await axios.post('https://192.168.246.247:8000/v1/auth/register', newUser);
+                    const response = await fetch('http://192.168.246.136:8000/v1/auth/register', {
+                        method: 'POST',
+                        body: JSON.stringify(newUser),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    //const response = await axios.post('https://192.168.246.136:8000/v1/auth/register', newUser);
 
                     if (!response.ok) {
                         const errorData = await response.json();
