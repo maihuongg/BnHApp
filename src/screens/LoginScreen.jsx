@@ -1,13 +1,88 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import SignUpScreen from './SignUpScreen';
+import { useDispatch } from 'react-redux';
+import { Alert } from 'react-native';
+import isEmpty from "validator/lib/isEmpty";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+    userprofileStart,
+    userprofileSuccess,
+    userprofileFailed,
+} from "../redux/userSlice";
+import {
+    loginFailed,
+    loginStart,
+    loginSuccess,
+} from "../redux/authSlice";
 const LoginScreen = () => {
-    const [email, setEmail] = useState('');
+    const [cccd, setCccd] = useState("");
     const [password, setPassword] = useState('');
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
+        const newUser = {
+            cccd: cccd,
+            password: password,
+        };
+        console.log('cccd', cccd);
+        if (isEmpty(cccd) || isEmpty(password)) {
+            Alert.alert('Lỗi', 'Vui lòng điền vào các mục còn trống');
+        } else {
+            dispatch(loginStart());
+            try {
+                const response = await fetch('http://192.168.246.136:8000/v1/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify(newUser),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    Alert.alert('Thất bại', errorData.message);
+                    dispatch(loginFailed());
+                } else {
+                    const data = await response.json();
+                    dispatch(loginSuccess(data));
+                    const userId = data._id;
+                    console.log('userId', userId);
+                    AsyncStorage.setItem('token', data.accessToken);
+                    
+                    const accessToken = data.accessToken;
+                    dispatch(userprofileStart());
+                    try {
+                        const response1 = await fetch("http://192.168.246.136:8000/v1/user/profile/" + userId, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                token: `Bearer ${accessToken}`
+                            }
+                        });
+                        if (!response1.ok) {
+                            dispatch(userprofileFailed());
+                            Alert.alert('Lỗi', 'Đã xảy ');
+                        } else {
+                            const data1 = await response1.json();
+                            dispatch(userprofileSuccess(data1));
+                            navigation.navigate('HomeScreen');
+                        }
+                    } catch (error) {
+                        dispatch(userprofileFailed());
+                        Alert.alert('Lỗi', 'Đã xảy ra lỗi không mong muốn.');
+                    }
+                    
+                }
+
+            } catch (error) {
+
+                Alert.alert('Lỗi', 'Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.');
+                dispatch(loginFailed());
+            }
+        }
+
     }
     const handleForgotPassword = () => {
     }
@@ -21,11 +96,15 @@ const LoginScreen = () => {
                 className="mt-20"></Image>
             <Text className="mx-auto justify-center font-bold text-xl">ĐĂNG NHẬP ĐỂ TRẢI NGHIỆM </Text>
             <TextInput
-                className="p-3 m-4 border-2 border-black rounded-lg text-black"
+                value={cccd}
+                onChangeText={(text) => setCccd(text)}
+                className="p-2 ml-4 mr-4 mt-2 border-2 border-black rounded-lg text-black"
                 placeholder="Số định danh cá nhân"
             />
             <TextInput
-                className="p-3 m-4 border-2 border-black rounded-lg text-black"
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                className="p-2 ml-4 mr-4 mt-2 border-2 border-black rounded-lg text-black"
                 placeholder="Nhập mật khẩu"
                 secureTextEntry
             />
@@ -37,11 +116,11 @@ const LoginScreen = () => {
             <TouchableOpacity onPress={handleForgotPassword}>
                 <Text className="text-blue font-bold mx-auto justify-center">Quên mật khẩu ?</Text>
             </TouchableOpacity>
-            <View className="flex-row justify-center m-2"> 
-            <Text className="text-black ">Chưa có tài khoản ?</Text>
-            <TouchableOpacity onPress={handleDangKy}>
-                <Text className="text-blue font-bold ml-1">Đăng ký ngay</Text>
-            </TouchableOpacity></View>
+            <View className="flex-row justify-center m-2">
+                <Text className="text-black ">Chưa có tài khoản ?</Text>
+                <TouchableOpacity onPress={handleDangKy}>
+                    <Text className="text-blue font-bold ml-1">Đăng ký ngay</Text>
+                </TouchableOpacity></View>
         </View>
     );
 };

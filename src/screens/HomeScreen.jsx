@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { View, Text, Image, ScrollView, TextInput } from 'react-native';
+import { useSelector } from 'react-redux';
 const HomeScreen = ({ navigation }) => {
+
+  const user = useSelector((state) => state.auth.login.currentUser);
+
     return (
         <View className="bg-white">
           <Image
@@ -9,7 +13,7 @@ const HomeScreen = ({ navigation }) => {
             }}
             style={{width: 200, height: 200}}
           />
-          <Text>Hello, I am your cat!</Text>
+          <Text>Hello, {user.cccd}</Text>
         </View>
       );
 };
