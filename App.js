@@ -14,7 +14,7 @@ import { store, persistor } from "./src/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 
 const Stack = createStackNavigator();
-
+// import Realm from 'realm';
 const AppNavigator = () => {
   return (
     <NavigationContainer>
@@ -34,6 +34,28 @@ const AppNavigator = () => {
     </NavigationContainer>
   );
 };
+// const realm = new Realm({
+//   schema: [
+//     {
+//       name: 'SuKien', // Tên bảng "Sự kiện"
+//       properties: {
+//         tenSuKien: 'string', // Tên sự kiện
+//         benhVienPhuTrach: 'string', // Bệnh viện phụ trách
+//         soLuongDaDangKy: 'int', // Số lượng đã đăng ký
+//         soLuongToiDa: 'int', // Số lượng tối đa
+//         banner: 'string',
+//       },
+//     },
+//     {
+//       name: 'BenhVien', // Tên bảng "Bệnh viện"
+//       properties: {
+//         tenBenhVien: 'string', // Tên bệnh viện
+//         diaChi: 'string', // Địa chỉ
+//         hotline: 'string', // Hotline
+//       },
+//     },
+//   ],
+// });
 
 const App = () => (
   <Provider store={store}>
