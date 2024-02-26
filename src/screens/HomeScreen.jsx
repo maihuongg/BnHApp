@@ -4,17 +4,16 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { IconButton } from '@material-tailwind/react';
-
 const HomeScreen = () => {
   const Tab = createBottomTabNavigator();
   const [activeItem, setActiveItem] = useState('home');
-
+  const [eventData, setEventData] = useState([]);
+  const [benhVienData, setBenhVienData] = useState([]);
   const handleItemClick = (item) => {
     setActiveItem(item);
   };
+ 
   return (
     <SafeAreaView className=" flex-1 bg-white pt-6">
       <View className="bg-white flex-row p-1 items-center ml-4">
@@ -30,10 +29,10 @@ const HomeScreen = () => {
         </View>
       </View>
 
-      <View className="flex-row p-2 mx-4 mt-2 border-2 border-blue rounded-lg">
+      <View className="flex-row p-2 mx-4 mt-2 border-2 border-blue rounded-lg bg-gray">
         <FontAwesome name="search" size={24} color='#0891b2' />
         <TextInput
-          className="text-black pl-1"
+          className="text-white pl-1"
           placeholder=" Nhập tên sự kiện / bệnh viện" />
       </View>
 
@@ -42,10 +41,9 @@ const HomeScreen = () => {
       <ScrollView>
         <ScrollView
           horizontal
-          showsHorizontalScrollIndicator={false}
-        >
-          <View className="flex-row m-2 shadow-sm">
-            <View className="w-80 h-32 mx-2">
+          showsHorizontalScrollIndicator={false} >
+          <View className="flex-row m-2 shadow-sm ">
+            <View className="w-80 h-32 mx-2 ">
               <Image
                 source={require('../../assets/1.png')}
                 style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
@@ -62,14 +60,16 @@ const HomeScreen = () => {
                 source={require('../../assets/3.png')}
                 style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
               />
-            </View></View>
+            </View>
+          </View>
 
         </ScrollView>
         {/* </View> */}
         {/* info */}
-        <View className="flex-auto">
+        <View className="flex-auto bg-silver">
           <Text className="text-xl font-bold text-blue px-4 my-2">Sự kiện nổi bật</Text>
-
+          {/* SỰ kiện */}
+       
           <View className="bg-white">
             <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
               <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
@@ -92,8 +92,7 @@ const HomeScreen = () => {
               </View>
 
             </TouchableOpacity>
-          </View>
-<View className="bg-white">
+          </View><View className="bg-white">
             <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
               <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
               <View className="mb-2">
@@ -117,9 +116,55 @@ const HomeScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+        <View className="flex-auto bg-silver">
+          <Text className="text-xl font-bold text-blue px-4 my-2">Một số bệnh viện hợp tác</Text>
+          {/* BV HỢP TÁC */}
+          <View className="bg-white">
+            <View className="bg-white mx-4 rounded-lg shadow-md my-3">
+              <TouchableOpacity className="bg-gray mx-auto rounded-full w-52 h-52 mt-2 justify-center items-center ">
+                <Image
+                  source={require('../../assets/2.png')}
+                  className="rounded-full w-48 h-48">
+                </Image>
+              </TouchableOpacity>
+              <View className="bg-gray justify-center mx-4 items-center -mt-10 -z-10 rounded-lg mb-3">
+                <Text className="mt-8 py-1 text-black font-bold text-lg">Bệnh viện Quân Y</Text>
+                <View className="flex-row mx-10">
+                  <Text className="font-bold">Địa chỉ :</Text>
+                  <Text className="text-black font-normal"> 786 Nguyễn Kiệm, P.3, Q.Gò Vấp, TP. Hồ Chí Minh</Text>
+                </View>
+                <View className="flex-row mx-auto mb-2 ">
+                  <Text className="font-bold">Hotline:</Text>
+                  <Text className="text-black font-normal">19001175</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View className="bg-white">
+            <View className="bg-white mx-4 rounded-lg shadow-md my-3">
+              <TouchableOpacity className="bg-gray mx-auto rounded-full w-52 h-52 mt-2 justify-center items-center ">
+                <Image
+                  source={require('../../assets/2.png')}
+                  className="rounded-full w-48 h-48">
+                </Image>
+              </TouchableOpacity>
+              <View className="bg-gray justify-center mx-4 items-center -mt-10 -z-10 rounded-lg mb-3">
+                <Text className="mt-8 py-1 text-black font-bold text-lg">Bệnh viện Quân Y</Text>
+                <View className="flex-row mx-10">
+                  <Text className="font-bold">Địa chỉ :</Text>
+                  <Text className="text-black font-normal"> 786 Nguyễn Kiệm, P.3, Q.Gò Vấp, TP. Hồ Chí Minh</Text>
+                </View>
+                <View className="flex-row mx-auto mb-2 ">
+                  <Text className="font-bold">Hotline:</Text>
+                  <Text className="text-black font-normal">19001175</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ScrollView >
       {/* BOTTOM BAR */}
-      <View className=" sticky inset-x-0 w-full bg-white shadow-md flex justify-around items-center p-4 flex-row ">
+      < View className=" sticky inset-x-0 w-full bg-white shadow-md flex justify-around items-center p-4 flex-row " >
         <TouchableOpacity onPress={() => handleItemClick('home')}>
           <FontAwesome name="home" size={28} color={activeItem === 'home' ? '#0891b2' : 'black'} />
         </TouchableOpacity>
@@ -132,7 +177,7 @@ const HomeScreen = () => {
         <TouchableOpacity onPress={() => handleItemClick('user')}>
           <FontAwesome name="user" size={24} color={activeItem === 'user' ? '#0891b2' : 'black'} />
         </TouchableOpacity>
-      </View>
+      </View >
       {/* search */}
 
     </SafeAreaView >
