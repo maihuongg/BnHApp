@@ -14,12 +14,7 @@ const accountController = {
     },
     resetPassword: async (req, res) => {
         try {
-            if (!req.userResetPassword) {
-                return res.status(403).json({ message: "Token không hợp lệ" });
-            }
-    
-            const { cccd, email } = req.userResetPassword;//middleware => next
-            const { newPassword, repeatNewPassword } = req.body;
+            const { cccd, newPassword, repeatNewPassword } = req.body;
     
             if (!newPassword || !repeatNewPassword) {
                 return res.status(400).json({ message: "Trường thông tin không được để trống" });

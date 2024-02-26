@@ -85,22 +85,22 @@ const userController = {
 
     forgotPassword: async (req, res) => {
         try {
-            const { cccd, email } = req.body;
+            const { cccd, email, code } = req.body;
             const user = await UserProfile.findOne({ cccd, email });
             console.log(user)
             if (user) {
-                const token = jwt.sign({ cccd, email }, process.env.JWT_SECRET, { expiresIn: '30m' });
-                console.log("token", token)
+                //const token = jwt.sign({ cccd, email }, process.env.JWT_SECRET, { expiresIn: '30m' });
+                //console.log("token", token)
                 // Tạo URL đến trang đổi mật khẩu trong email
-                const resetPasswordURL = `http://localhost:3000/reset-password?token=${token}`;
+                //const resetPasswordURL = `http://localhost:3000/reset-password?token=${token}`;
                 // Send reset password email
-                console.log('resee ur',resetPasswordURL)
-                const emailResponse = await sendMail(user, resetPasswordURL);
+                //console.log('resee ur',resetPasswordURL)
+                const emailResponse = await sendMail(user, code);
                 console.log('Email response:', emailResponse);
     
                 return res.status(200).json({
-                    token,
-                    message: 'Chúng tôi đã gửi một hộp thư thay đổi mật khẩu đến địa chỉ email mà bạn đã đăng ký. Vui lòng kiểm tra hộp thư của bạn và làm theo hướng dẫn để hoàn tất quá trình thay đổi mật khẩu. '
+                    code,
+                    message: 'Mã đã được gửi đến email.'
                 });
 
             }
@@ -462,7 +462,7 @@ const mailjet = Mailjet.apiConnect(
     process.env.MJ_APIKEY_PRIVATE,
 );
 
-const sendMail = async (user, password) => {
+const sendMail = async (user, code) => {
     try {
         const request = await mailjet
             .post('send', { version: 'v3.1' })
@@ -485,11 +485,10 @@ const sendMail = async (user, password) => {
                         <p>Chào quý đối tác,</p>
 
                         <p>Cảm ơn bạn đã liên hệ với chúng tôi.</p>
-                        <p>Dưới đây là link dùng để thay đổi mật khẩu của bạn </p>
+                        <p>Dưới đây là mã xác nhận thay đổi mật khẩu của bạn </p>
                         
-                        <p> Mật khẩu: ${password} </p>
-                        
-                        <p>Vui lòng nhấp vào đường dẫn trên để tiếp tục quá trình thay đổi mật khẩu của bạn. Nếu bạn không thực hiện yêu cầu này, vui lòng liên hệ ngay lập tức với bộ phận hỗ trợ của chúng tôi.</p>
+                        <p> Mã xác nhận: ${code} </p>
+
                         
                         <p>Chúng tôi luôn ở đây để hỗ trợ bạn. Xin cảm ơn!</p>
                         

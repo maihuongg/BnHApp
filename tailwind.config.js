@@ -14,7 +14,8 @@ module.exports = {
       'silver': '#ecebff',
       'bubble-gum': '#ff77e9',
       'bermuda': '#78dcca',
-      'blue':'#0891b2'
+      'blue':'#0891b2',
+      'gray':'#EDEEF0'
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],

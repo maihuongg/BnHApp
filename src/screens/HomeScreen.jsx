@@ -93,7 +93,7 @@ const HomeScreen = () => {
 
             </TouchableOpacity>
           </View>
-<View className="bg-white">
+          <View className="bg-white">
             <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
               <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
               <View className="mb-2">
@@ -115,6 +115,52 @@ const HomeScreen = () => {
               </View>
 
             </TouchableOpacity>
+          </View>
+        </View>
+        <View className="flex-auto bg-silver">
+          <Text className="text-xl font-bold text-blue px-4 my-2">Một số bệnh viện hợp tác</Text>
+          {/* BV HỢP TÁC */}
+          <View className="bg-white">
+            <View className="bg-white mx-4 rounded-lg shadow-md my-3">
+              <TouchableOpacity className="bg-gray mx-auto rounded-full w-52 h-52 mt-2 justify-center items-center ">
+                <Image
+                  source={require('../../assets/2.png')}
+                  className="rounded-full w-48 h-48">
+                </Image>
+              </TouchableOpacity>
+              <View className="bg-gray justify-center mx-4 items-center -mt-10 -z-10 rounded-lg mb-3">
+                <Text className="mt-8 py-1 text-black font-bold text-lg">Bệnh viện Quân Y</Text>
+                <View className="flex-row mx-10">
+                  <Text className="font-bold">Địa chỉ :</Text>
+                  <Text className="text-black font-normal"> 786 Nguyễn Kiệm, P.3, Q.Gò Vấp, TP. Hồ Chí Minh</Text>
+                </View>
+                <View className="flex-row mx-auto mb-2 ">
+                  <Text className="font-bold">Hotline:</Text>
+                  <Text className="text-black font-normal">19001175</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View className="bg-white">
+            <View className="bg-white mx-4 rounded-lg shadow-md my-3">
+              <TouchableOpacity className="bg-gray mx-auto rounded-full w-52 h-52 mt-2 justify-center items-center ">
+                <Image
+                  source={require('../../assets/2.png')}
+                  className="rounded-full w-48 h-48">
+                </Image>
+              </TouchableOpacity>
+              <View className="bg-gray justify-center mx-4 items-center -mt-10 -z-10 rounded-lg mb-3">
+                <Text className="mt-8 py-1 text-black font-bold text-lg">Bệnh viện Quân Y</Text>
+                <View className="flex-row mx-10">
+                  <Text className="font-bold">Địa chỉ :</Text>
+                  <Text className="text-black font-normal"> 786 Nguyễn Kiệm, P.3, Q.Gò Vấp, TP. Hồ Chí Minh</Text>
+                </View>
+                <View className="flex-row mx-auto mb-2 ">
+                  <Text className="font-bold">Hotline:</Text>
+                  <Text className="text-black font-normal">19001175</Text>
+                </View>
+              </View>
+            </View>
           </View>
         </View>
       </ScrollView>

@@ -6,6 +6,9 @@ import IntroductionScreen from './src/screens/IntroductionScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
+import ForgotPassword from './src/screens/ForgotPassword';
+import CodeScreen from './src/screens/CodeScreen';
+import ResetPassword from './src/screens/ResetPassword';
 import { Provider } from 'react-redux';
 import { store, persistor } from "./src/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
@@ -20,6 +23,13 @@ const AppNavigator = () => {
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Screen name="ResetPassword" component={ResetPassword} 
+        options={({ route }) => ({ title: `Reset Password: ${route.params.cccd}` })}
+        />
+        <Stack.Screen name="CodeScreen" component={CodeScreen} 
+        options={({ route }) => ({ title: `Code Screen: ${route.params.cccd} - ${route.params.code}` })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

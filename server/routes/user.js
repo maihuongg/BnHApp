@@ -9,7 +9,7 @@ router.put('/profile/:account_id',authMiddleware.isUser, userController.updatePr
 router.put('/profileimage/:account_id',authMiddleware.isUser, userController.updateProfileImage);
 router.post('/forgot-password',userController.forgotPassword);
 router.post('/valid-reset-token',authMiddleware.checkValidResetPasswordToken);
-router.put('/reset-password', authMiddleware.verifyResetPasswordToken,accountController.resetPassword);
+router.put('/reset-password', accountController.resetPassword);
 router.get('/event', userController.getAllEventByUser);
 router.post('/event/register', authMiddleware.isUser, userController.registerEvent);
 router.get('/getevent/:id', authMiddleware.isUser, hospitalController.getEventById);

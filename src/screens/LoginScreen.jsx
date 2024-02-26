@@ -85,6 +85,7 @@ const LoginScreen = () => {
 
     }
     const handleForgotPassword = () => {
+        navigation.navigate('ForgotPassword');
     }
     const handleDangKy = () => {
         navigation.navigate('SignUpScreen');
