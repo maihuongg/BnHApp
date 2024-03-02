@@ -32,7 +32,7 @@ const LoginScreen = () => {
         } else {
             dispatch(loginStart());
             try {
-                const response = await fetch('http://192.168.246.136:8000/v1/auth/login', {
+                const response = await fetch('http://192.168.43.2:8000/v1/auth/login', {
                     method: 'POST',
                     body: JSON.stringify(newUser),
                     headers: {
@@ -54,7 +54,7 @@ const LoginScreen = () => {
                     const accessToken = data.accessToken;
                     dispatch(userprofileStart());
                     try {
-                        const response1 = await fetch("http://192.168.246.136:8000/v1/user/profile/" + userId, {
+                        const response1 = await fetch("http://192.168.43.2:8000/v1/user/profile/" + userId, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',

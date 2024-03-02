@@ -1,5 +1,5 @@
 // IntroductionScreen.js
-import React, { useEffect } from 'react';
+import React, {useEffect} from "react";
 import { View, Text, StyleSheet, Image } from 'react-native';
 
 const IntroductionScreen = ({ navigation }) => {

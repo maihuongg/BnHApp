@@ -479,7 +479,7 @@ const sendMail = async (user, code) => {
                                
                             }
                         ],
-                        Subject: "[BloodnHeart] Xác nhận hợp tác dự án ",
+                        Subject: "[BloodnHeart] Thay đổi mật khẩu ",
                         HTMLPart: 
                         `
                         <p>Chào quý đối tác,</p>

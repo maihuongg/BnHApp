@@ -4,15 +4,52 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import TopBar from './components/Topbar';
+import { AntDesign } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { IconButton } from '@material-tailwind/react';
+import ImgWithBlurredCaption from '../components/ImageBlur';
 const HomeScreen = () => {
+  const Tab = createBottomTabNavigator();
   const [activeItem, setActiveItem] = useState('home');
-
+  const [eventData, setEventData] = useState([]);
+  const [benhVienData, setBenhVienData] = useState([]);
   const handleItemClick = (item) => {
     setActiveItem(item);
   };
-  const navigation = useNavigation();
+  useEffect(() => {
+    // Open Realm instance and fetch event data
+    const realm = new Realm({
+      schema: [
+        {
+          name: 'SuKien',
+          properties: {
+            tenSuKien: 'string',
+            benhVienPhuTrach: 'string',
+            soLuongDaDangKy: 'int',
+            soLuongToiDa: 'int',
+            banner: 'string',
+          },
+        },
+        {
+          name: 'BenhVien',
+          properties: {
+            tenBenhVien: 'string',
+            diaChi: 'string',
+            hotline: 'string',
+          },
+        },
+      ],
+    });
+    const events = realm.objects('SuKien');
+
+    // Convert Realm Results to array and set state variable
+    setEventData(Array.from(events));
+
+    // Close Realm instance when component unmounts
+    return () => {
+      realm.close();
+    };
+  }, []);
 
   return (
     <SafeAreaView className=" flex-1 bg-white pt-6">
@@ -45,13 +82,13 @@ const HomeScreen = () => {
           <View className="flex-row m-2 shadow-sm ">
             <View className="w-80 h-32 mx-2 ">
               <Image
-                source={require('../../assets/2.png')}
+                source={require('../../assets/1.png')}
                 style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
               />
             </View>
             <View className="w-80 h-32 mx-2">
               <Image
-                source={require('../../assets/1.png')}
+                source={require('../../assets/2.png')}
                 style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
               />
             </View>
@@ -69,7 +106,31 @@ const HomeScreen = () => {
         <View className="flex-auto bg-silver">
           <Text className="text-xl font-bold text-blue px-4 my-2">Sự kiện nổi bật</Text>
           {/* SỰ kiện */}
+          {eventData.map((event, index) => (
+            <View className="bg-white">
+              <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
+                <Image source={{ uri: event.banner }} className="w-full h-32 rounded-md mb-2" />
+                <View className="mb-2">
+                  <Text className="text-lg font-bold" >{event.tenSuKien} </Text>
+                  <View className="flex-row">
+                    <Text>Bệnh viện phụ trách : </Text>
+                    <Text className="font-bold">{event.benhVienPhuTrach}</Text>
+                  </View>
+                  <View className="flex-row">
+                    <Text>Số lượng đăng ký : {event.soLuongDaDangKy}/</Text>
+                    <Text className="font-bold">{event.soLuongToiDa}</Text>
+                  </View>
+                  <TouchableOpacity
+                    className="items-center bg-blue p-2 mx-8 my-2 rounded-md" >
+                    <View className="flex-row">
+                      <Text className="text-white font-bold">Xem chi tiết</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
 
+              </TouchableOpacity>
+            </View>
+          ))}
           <View className="bg-white">
             <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
               <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
@@ -164,7 +225,7 @@ const HomeScreen = () => {
         </View>
       </ScrollView >
       {/* BOTTOM BAR */}
-      {/* < View className=" absolute bottom-0 w-full bg-white shadow-md flex justify-around items-center p-4 flex-row " >
+      < View className=" sticky inset-x-0 w-full bg-white shadow-md flex justify-around items-center p-4 flex-row " >
         <TouchableOpacity onPress={() => handleItemClick('home')}>
           <FontAwesome name="home" size={28} color={activeItem === 'home' ? '#0891b2' : 'black'} />
         </TouchableOpacity>
@@ -174,13 +235,11 @@ const HomeScreen = () => {
         <TouchableOpacity onPress={() => handleItemClick('hospital-alt')}>
           <FontAwesome5 name="hospital-alt" size={24} color={activeItem === 'hospital-alt' ? '#0891b2' : 'black'} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleInformation}>
+        <TouchableOpacity onPress={() => handleItemClick('user')}>
           <FontAwesome name="user" size={24} color={activeItem === 'user' ? '#0891b2' : 'black'} />
         </TouchableOpacity>
-      </View > */}
+      </View >
       {/* search */}
-      {/* <TopBar activeItem={activeItem} handleItemClick={handleItemClick} /> */}
-
 
     </SafeAreaView >
   );

@@ -46,8 +46,9 @@ function addSuKien(tenSuKien, benhVienPhuTrach, soLuongToiDa) {
   }
 
 // Thêm dữ liệu vào Realm
-addSuKien('Sự kiện 2', 'Bệnh viện A', 0, 100, 'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510_640.jpg');
-addBenhVien('Bệnh viện b', 'Địa chỉ b', '0963214587');
+addSuKien('Sự kiện A', 'Bệnh viện Thủ Đức', 37, 50, 'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510_640.jpg');
+addSuKien('Sự kiện B', 'Bệnh viện Quân Y', 37, 50, 'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510_640.jpg');
+addBenhVien('Bệnh viện B', 'Bệnh viện Quân Y', '0963214587');
 
 const suKienData = realm.objects('SuKien');
 const benhVienData = realm.objects('BenhVien');

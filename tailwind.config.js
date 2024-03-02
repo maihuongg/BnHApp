@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./App.{js,jsx,ts,tsx}", "./src/screens/**/*.{js,jsx,ts,tsx}"],
+  content: ["./App.{js,jsx,ts,tsx}", "./src/screens/**/*.{js,jsx,ts,tsx}","./src/components/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {},
     colors: {
@@ -15,7 +15,9 @@ module.exports = {
       'bubble-gum': '#ff77e9',
       'bermuda': '#78dcca',
       'blue':'#0891b2',
-      'gray':'#EDEEF0'
+      'gray':'#EDEEF0',
+      'semigray':'#A3AAB2',
+      'rnb':'rgba(0,0,0,0.5)'
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
