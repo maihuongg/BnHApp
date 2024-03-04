@@ -27,12 +27,10 @@ const AppNavigator = () => {
       <Stack.Navigator initialRouteName="Test" screenOptions={{ headerShown: false }} headerMode="none">
 
         {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
-        <Stack.Screen name="DetailScreen" component={DetailEventScreen} />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        
         <Stack.Screen name="Auth" component={AuthStack} />
         <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} />
         <Stack.Screen name="Information" component={InformationTab} /> 
-        <Stack.Screen name="Profile" component={ProfileScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>
@@ -104,6 +102,7 @@ const AuthStack = () => {
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="CodeScreen" component={CodeScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen}/>
+      <Stack.Screen name="DetailScreen" component={DetailEventScreen} />
     </Stack.Navigator>
   );
 };
