@@ -17,7 +17,10 @@ module.exports = {
       'blue':'#0891b2',
       'gray':'#EDEEF0',
       'semigray':'#A3AAB2',
-      'rnb':'rgba(0,0,0,0.5)'
+      'rnb':'rgba(0,0,0,0.5)',
+      'green':'#0AB34D',
+      'yellow':'#FEC10A',
+      'red':'#871111',
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],

@@ -13,7 +13,9 @@ const HomeScreen = () => {
     setActiveItem(item);
   };
   const navigation = useNavigation();
-
+  const handleToDetailEvent = () => {
+    navigation.navigate('DetailScreen')
+  };
   return (
     <SafeAreaView className=" flex-1 bg-white pt-6">
       <View className="bg-white flex-row p-1 items-center ml-4">
@@ -84,6 +86,7 @@ const HomeScreen = () => {
                   <Text className="font-bold">50</Text>
                 </View>
                 <TouchableOpacity
+                 onPress={handleToDetailEvent}
                   className="items-center bg-blue p-2 mx-8 my-2 rounded-md" >
                   <View className="flex-row">
                     <Text className="text-white font-bold">Xem chi tiết</Text>
@@ -106,6 +109,7 @@ const HomeScreen = () => {
                   <Text className="font-bold">50</Text>
                 </View>
                 <TouchableOpacity
+                 
                   className="items-center bg-blue p-2 mx-8 my-2 rounded-md" >
                   <View className="flex-row">
                     <Text className="text-white font-bold">Xem chi tiết</Text>
