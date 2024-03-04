@@ -32,7 +32,7 @@ const LoginScreen = () => {
         } else {
             dispatch(loginStart());
             try {
-                const response = await fetch('http://192.168.43.2:8000/v1/auth/login', {
+                const response = await fetch('http://192.168.2.105:8000/v1/auth/login', {
                     method: 'POST',
                     body: JSON.stringify(newUser),
                     headers: {
@@ -54,7 +54,7 @@ const LoginScreen = () => {
                     const accessToken = data.accessToken;
                     dispatch(userprofileStart());
                     try {
-                        const response1 = await fetch("http://192.168.43.2:8000/v1/user/profile/" + userId, {
+                        const response1 = await fetch("http://192.168.2.105:8000/v1/user/profile/" + userId, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ const LoginScreen = () => {
                         } else {
                             const data1 = await response1.json();
                             dispatch(userprofileSuccess(data1));
-                            navigation.navigate('HomeScreen');
+                            navigation.navigate('Home');
                         }
                     } catch (error) {
                         dispatch(userprofileFailed());

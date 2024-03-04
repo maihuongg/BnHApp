@@ -34,7 +34,7 @@ const SignUpScreen = () => {
         } else {
             if (repw == newUser.password) {
                 try {
-                    const response = await fetch('http://192.168.43.2:8000/v1/auth/register', {
+                    const response = await fetch('http://192.168.2.105:8000/v1/auth/register', {
                         method: 'POST',
                         body: JSON.stringify(newUser),
                         headers: {

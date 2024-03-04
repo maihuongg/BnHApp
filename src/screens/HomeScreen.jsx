@@ -96,10 +96,10 @@ const HomeScreen = () => {
             <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
               <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
               <View className="mb-2">
-                <Text className="text-lg font-bold" >Sự kiện A </Text>
+                <Text className="text-lg font-bold" >Sự kiện B </Text>
                 <View className="flex-row">
                   <Text>Bệnh viện phụ trách : </Text>
-                  <Text className="font-bold">Bệnh viện Thủ Đức</Text>
+                  <Text className="font-bold">Bệnh viện Quân Y</Text>
                 </View>
                 <View className="flex-row">
                   <Text>Số lượng đăng ký : 37/</Text>
@@ -128,10 +128,10 @@ const HomeScreen = () => {
                 </Image>
               </TouchableOpacity>
               <View className="bg-gray justify-center mx-4 items-center -mt-10 -z-10 rounded-lg mb-3">
-                <Text className="mt-8 py-1 text-black font-bold text-lg">Bệnh viện Quân Y</Text>
+                <Text className="mt-8 py-1 text-black font-bold text-lg">Bệnh viện Thủ Đức</Text>
                 <View className="flex-row mx-10">
                   <Text className="font-bold">Địa chỉ :</Text>
-                  <Text className="text-black font-normal"> 786 Nguyễn Kiệm, P.3, Q.Gò Vấp, TP. Hồ Chí Minh</Text>
+                  <Text className="text-black font-normal"> 64 Lê Văn Chí, Phường Linh Trung, Thủ Đức, TP. Hồ Chí Minh</Text>
                 </View>
                 <View className="flex-row mx-auto mb-2 ">
                   <Text className="font-bold">Hotline:</Text>

@@ -25,10 +25,10 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Test" screenOptions={{ headerShown: false }} headerMode="none">
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        {/* <Stack.Screen name="Auth" component={AuthStack} /> */}
-        {/* <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} />
-        <Stack.Screen name="Information" component={InformationTab} /> */}
+        {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+        <Stack.Screen name="Auth" component={AuthStack} />
+        <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} />
+        <Stack.Screen name="Information" component={InformationTab}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -80,12 +80,12 @@ const InformationTab = () => {
         }, tabBarLabel: () => null
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
-        inactiveTintColor: 'gray',
+        activeTintColor: '#0891b2',
+        inactiveTintColor: '#0891b2',
       }}
     >
-      <Tab.Screen name="HomeScreen" component={HomeScreen} />
-      <Tab.Screen name="InformationScreen" component={InformationScreen} />
+      <Tab.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }}/>
+      <Tab.Screen name="InformationScreen" component={InformationScreen} options={{ headerShown: false }}/>
     </Tab.Navigator>
   );
 };
@@ -98,6 +98,7 @@ const AuthStack = () => {
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="CodeScreen" component={CodeScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen}/>
     </Stack.Navigator>
   );
 };
