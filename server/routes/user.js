@@ -21,6 +21,7 @@ router.post('/event/filter', userController.filterEvent);
 router.get('/allhospital', userController.getAllHospital);
 router.get('/search/event', userController.searchEvent);
 router.get('/bestevent', userController.bestEvent);
+router.get('/bestfiveevent', userController.bestFiveEvent);
 router.delete('/event/deleteRegister', authMiddleware.isUser, userController.DeleteRegister);
 router.put('/updatePassword', authMiddleware.isUser, userController.updatepassword);
 module.exports = router;

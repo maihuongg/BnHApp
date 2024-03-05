@@ -30,7 +30,7 @@ const ForgotPassword = () => {
             Alert.alert('Lỗi', 'Vui lòng điền vào các mục còn trống');
         } else {
             try {
-                const response = await fetch('http://192.168.2.105:8000/v1/user/forgot-password', {
+                const response = await fetch('http://192.168.246.136:8000/v1/user/forgot-password', {
                     method: 'POST',
                     body: JSON.stringify(requestForgot),
                     headers: {

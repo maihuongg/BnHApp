@@ -62,7 +62,7 @@ const ProfileScreen = () => {
         const handleProfile = async () => {
             dispatch(userprofileStart());
             try {
-                const response1 = await fetch("http://192.168.2.105:8000/v1/user/profile/" + userId, {
+                const response1 = await fetch("http://192.168.246.136:8000/v1/user/profile/" + userId, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const ProfileScreen = () => {
         };
         dispatch(userprofileStart());
         try {
-            const response = await fetch("http://192.168.2.105:8000/v1/user/profile/" + userId, {
+            const response = await fetch("http://192.168.246.136:8000/v1/user/profile/" + userId, {
                 method: 'PUT',
                 body: JSON.stringify(updateUser),
                 headers: {

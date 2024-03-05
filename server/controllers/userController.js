@@ -389,6 +389,19 @@ const userController = {
             return res.status(500).json(error);
         }
     },
+    bestFiveEvent: async (req, res) => {
+        try {
+            const event = await Event.find().sort({ 'listusers.count': -1 }).limit(5);
+
+            if (!event) {
+                return res.status(404).json({ message: 'Không tìm thấy sự kiện.' });
+            }
+
+            return res.json(event);
+        } catch (error) {
+            return res.status(500).json(error);
+        }
+    },
     updatepassword: async (req, res) => {
         try {
             const { password, newpassword, account_id } = req.body;

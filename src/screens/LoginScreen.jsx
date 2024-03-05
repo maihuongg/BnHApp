@@ -9,6 +9,9 @@ import {
     userprofileStart,
     userprofileSuccess,
     userprofileFailed,
+    allEventStart,
+    allEventSuccess,
+    allEventFailed,
 } from "../redux/userSlice";
 import {
     loginFailed,
@@ -32,7 +35,7 @@ const LoginScreen = () => {
         } else {
             dispatch(loginStart());
             try {
-                const response = await fetch('http://192.168.2.105:8000/v1/auth/login', {
+                const response = await fetch('http://192.168.246.136:8000/v1/auth/login', {
                     method: 'POST',
                     body: JSON.stringify(newUser),
                     headers: {
@@ -50,11 +53,36 @@ const LoginScreen = () => {
                     const userId = data._id;
                     console.log('userId', userId);
                     AsyncStorage.setItem('token', data.accessToken);
-                    
+
                     const accessToken = data.accessToken;
+                    console.log("five");
+                    dispatch(allEventStart());
+                    console.log("five");
+                    try {
+                        const response = await fetch("http://192.168.246.136:8000/v1/user/bestfiveevent", {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (!response.ok) {
+                            console.log("Get Best Event Fail.")
+                            dispatch(allEventFailed());
+                        }
+                        else {
+                            const bestEvent = await response.json();
+                            console.log("five");
+                            dispatch(allEventSuccess(bestEvent));
+
+                        }
+                    } catch (error) {
+                        console.error("Error fetching data:", error);
+                        dispatch(allEventFailed());
+                    }
                     dispatch(userprofileStart());
                     try {
-                        const response1 = await fetch("http://192.168.2.105:8000/v1/user/profile/" + userId, {
+                        const response1 = await fetch("http://192.168.246.136:8000/v1/user/profile/" + userId, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -73,7 +101,6 @@ const LoginScreen = () => {
                         dispatch(userprofileFailed());
                         Alert.alert('Lỗi', 'Đã xảy ra lỗi không mong muốn.');
                     }
-                    
                 }
 
             } catch (error) {

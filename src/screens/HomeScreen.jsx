@@ -19,6 +19,7 @@ const HomeScreen = () => {
   const user = useSelector((state) => state.auth.login.currentUser);
   const userId = user?._id;
   const accessToken = user?.accessToken;
+  const fiveEvent = useSelector((state) => state.user.allevent.getEvent);
   const [activeItem, setActiveItem] = useState('home');
 
   const handleItemClick = (item) => {
@@ -34,11 +35,9 @@ const HomeScreen = () => {
   console.log("hgjh", dataBestEvent);
 
   useEffect(() => {
-    const h = 7;
-    console.log("h", h);
     const handleBestEvent = async () => {
       try {
-        const response2 = await fetch("http://192.168.2.105:8000/v1/user/bestevent", {
+        const response2 = await fetch("http://192.168.246.136:8000/v1/user/bestevent", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -65,7 +64,7 @@ const HomeScreen = () => {
     if (user) {
       dispatch(eventProfileStart());
       try {
-        const response1 = await fetch("http://192.168.2.105:8000/v1/user/getevent/" + eventId, {
+        const response1 = await fetch("http://192.168.246.136:8000/v1/user/getevent/" + eventId, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -84,7 +83,7 @@ const HomeScreen = () => {
 
       dispatch(hospitalStart());
       try {
-        const response2 = await fetch("http://192.168.2.105:8000/v1/user/gethospital/" + hospitalId, {
+        const response2 = await fetch("http://192.168.246.136:8000/v1/user/gethospital/" + hospitalId, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -110,7 +109,7 @@ const HomeScreen = () => {
 
   const fetchDataSearcg = async (keyword) => {
     try {
-      const response2 = await fetch(`http://192.168.2.105:8000/v1/user/search/event?keyword=${keyword}`, {
+      const response2 = await fetch(`http://192.168.246.136:8000/v1/user/search/event?keyword=${keyword}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -214,6 +213,41 @@ const HomeScreen = () => {
 
               </TouchableOpacity>
             </View>
+          </View>
+          {/* 5 Sự kiện nổi bật */ }
+          <View className="flex-auto bg-silver">
+            <Text className="text-xl font-bold text-blue px-4 my-2">Top 5 Sự kiện</Text>
+            <ScrollView 
+            horizontal
+            showsHorizontalScrollIndicator={false} >
+              {fiveEvent.map((result)=>(
+                <View className="bg-white">
+                <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
+                  <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
+                  <View className="mb-2">
+                    <Text className="text-lg font-bold" >{result.eventName}</Text>
+                    <View className="flex-row">
+                      <Text>Địa chỉ : </Text>
+                      <Text className="font-bold">{result.address}</Text>
+                    </View>
+                    <View className="flex-row">
+                      <Text>Số lượng đăng ký : {result.listusers.count}/</Text>
+                      <Text className="font-bold">{result.amount}</Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => handleToDetailEvent(result._id, result.hospital_id)}
+                      className="items-center bg-blue p-2 mx-8 my-2 rounded-md" >
+                      <View className="flex-row">
+                        <Text className="text-white font-bold">Xem chi tiết</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+  
+                </TouchableOpacity>
+              </View>
+              ))}
+            </ScrollView>
+            
           </View>
           <View className="flex-auto bg-silver">
             <Text className="text-xl font-bold text-blue px-4 my-2">Một số bệnh viện hợp tác</Text>
