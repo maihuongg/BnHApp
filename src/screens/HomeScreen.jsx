@@ -125,6 +125,10 @@ const HomeScreen = () => {
       console.error("Error fetching data:", error);
     }
   };
+
+  const handleEvent = () => {
+    navigation.navigate('Sukien');
+  }
   return (
     <SafeAreaView className=" flex-1 bg-white pt-6">
       <View className="bg-white flex-row p-1 items-center ml-4">
@@ -187,6 +191,9 @@ const HomeScreen = () => {
           {/* info */}
           <View className="flex-auto bg-silver">
             <Text className="text-xl font-bold text-blue px-4 my-2">Sự kiện nổi bật</Text>
+            <TouchableOpacity className="ml-auto" onPress={handleEvent} >
+              <MaterialIcons name="arrow-forward" size={32} color="red" />
+            </TouchableOpacity>
             {/* SỰ kiện */}
 
             <View className="bg-white">
@@ -214,40 +221,40 @@ const HomeScreen = () => {
               </TouchableOpacity>
             </View>
           </View>
-          {/* 5 Sự kiện nổi bật */ }
+          {/* 5 Sự kiện nổi bật */}
           <View className="flex-auto bg-silver">
             <Text className="text-xl font-bold text-blue px-4 my-2">Top 5 Sự kiện</Text>
-            <ScrollView 
-            horizontal
-            showsHorizontalScrollIndicator={false} >
-              {fiveEvent.map((result)=>(
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false} >
+              {fiveEvent.map((result) => (
                 <View className="bg-white">
-                <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
-                  <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
-                  <View className="mb-2">
-                    <Text className="text-lg font-bold" >{result.eventName}</Text>
-                    <View className="flex-row">
-                      <Text>Địa chỉ : </Text>
-                      <Text className="font-bold">{result.address}</Text>
-                    </View>
-                    <View className="flex-row">
-                      <Text>Số lượng đăng ký : {result.listusers.count}/</Text>
-                      <Text className="font-bold">{result.amount}</Text>
-                    </View>
-                    <TouchableOpacity
-                      onPress={() => handleToDetailEvent(result._id, result.hospital_id)}
-                      className="items-center bg-blue p-2 mx-8 my-2 rounded-md" >
+                  <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
+                    <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
+                    <View className="mb-2">
+                      <Text className="text-lg font-bold" >{result.eventName}</Text>
                       <View className="flex-row">
-                        <Text className="text-white font-bold">Xem chi tiết</Text>
+                        <Text>Địa chỉ : </Text>
+                        <Text className="font-bold">{result.address}</Text>
                       </View>
-                    </TouchableOpacity>
-                  </View>
-  
-                </TouchableOpacity>
-              </View>
+                      <View className="flex-row">
+                        <Text>Số lượng đăng ký : {result.listusers.count}/</Text>
+                        <Text className="font-bold">{result.amount}</Text>
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => handleToDetailEvent(result._id, result.hospital_id)}
+                        className="items-center bg-blue p-2 mx-8 my-2 rounded-md" >
+                        <View className="flex-row">
+                          <Text className="text-white font-bold">Xem chi tiết</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+
+                  </TouchableOpacity>
+                </View>
               ))}
             </ScrollView>
-            
+
           </View>
           <View className="flex-auto bg-silver">
             <Text className="text-xl font-bold text-blue px-4 my-2">Một số bệnh viện hợp tác</Text>

@@ -18,7 +18,7 @@ import {
     userprofileFailed,
 } from "../redux/userSlice";
 const ProfileScreen = () => {
-  
+
 
     const user = useSelector((state) => state.auth.login.currentUser);
     const userId = user?._id;
@@ -28,7 +28,7 @@ const ProfileScreen = () => {
     const dispatch = useDispatch();
 
     const [fullName, setfullName] = useState(userPro?.fullName);
-    const [birthDay, setbirthDay] = useState(userPro?.birthDay);
+    const [birthDay, setbirthDay] = useState(new Date());
 
     const [gender, setGender] = useState(userPro?.gender);
     const [bloodgroup, setbloodGroup] = useState(userPro?.bloodgroup);
@@ -39,6 +39,7 @@ const ProfileScreen = () => {
     const [modalVisible, setModalVisible] = useState(false)
     // const [selected, setSelected] = useState(null);
     // const [bloodGroup, setBloodGroup] = useState(null);
+
     const bloodGroupData = [
         { key: 'A-', value: 'A-' },
         { key: 'A+', value: 'A+' },
@@ -48,7 +49,7 @@ const ProfileScreen = () => {
         { key: 'AB+', value: 'AB+' },
         { key: 'O-', value: 'O-' },
         { key: 'O+', value: 'O+' },
-        
+
         // Thêm các nhóm máu khác nếu cần
     ];
 
@@ -83,13 +84,15 @@ const ProfileScreen = () => {
     }, [dispatch]);
 
     const handleUpdate = async (e) => {
+        const [day, month, year] = birthDay.split("/"); // Tách ngày, tháng, năm từ chuỗi
+        const formattedDate = new Date(`${year}-${month}-${day}`);
         const updateUser = {
             fullName: fullName,
-            birthDay: birthDay,
+            birthDay: formattedDate,
             gender: gender,
             bloodgroup: bloodgroup,
             phone: phone,
-            email:email,
+            email: email,
             address: address,
         };
         dispatch(userprofileStart());
@@ -156,7 +159,7 @@ const ProfileScreen = () => {
                 </View>
                 <View className="flex-row mx-2">
                     <Text className="text-black font-bold text-[18px]">Ngày sinh :  </Text>
-                    <Text className="text-black font-normal text-[18px] ml-auto"> {userPro?.birthDay} </Text>
+                    <Text className="text-black font-normal text-[18px] ml-auto"> {moment(userPro?.birthDay).format('DD/MM/YYYY')} </Text>
                 </View>
                 <View className="flex-row mx-2">
                     <Text className="text-black font-bold text-[18px]">Giới tính :  </Text>
@@ -223,7 +226,7 @@ const ProfileScreen = () => {
                                     className="border border-gray-300 rounded-md p-2" />
                                 <Text className="text-black text-[16px] font-bold my-2"> Ngày sinh </Text>
                                 <TextInput
-                                    defaultValue={userPro?.birthDay}
+                                    defaultValue={moment(userPro?.birthDay).format('DD/MM/YYYY')}
                                     onChangeText={(text) => setbirthDay(text)}
                                     placeholder="15/05/1999"
                                     className="border border-gray-300 rounded-md p-2" />

@@ -18,6 +18,7 @@ import CodeScreen from './src/screens/CodeScreen';
 import { store, persistor } from './src/redux/store'; // Import store and persistor
 import ProfileScreen from './src/screens/ProfileScreen';
 import DetailEventScreen from './src/screens/DetailEventScreen';
+import Sukien from './src/screens/Sukien';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -103,6 +104,7 @@ const AuthStack = () => {
       <Stack.Screen name="CodeScreen" component={CodeScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen}/>
       <Stack.Screen name="DetailScreen" component={DetailEventScreen} />
+      <Stack.Screen name="Sukien" component={Sukien}/>
     </Stack.Navigator>
   );
 };
