@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,19 +19,22 @@ import CodeScreen from './src/screens/CodeScreen';
 import { store, persistor } from './src/redux/store'; // Import store and persistor
 import ProfileScreen from './src/screens/ProfileScreen';
 import DetailEventScreen from './src/screens/DetailEventScreen';
+import LichHenScreen from'./src/screens/LichHenScreen';
 import Sukien from './src/screens/Sukien';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
 
 const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Test" screenOptions={{ headerShown: false }} headerMode="none">
 
-        {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="LichHen" component={LichHenScreen} />
         
-        <Stack.Screen name="Auth" component={AuthStack} />
-        <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="Auth" component={AuthStack} /> */}
+        {/* <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} /> */}
         <Stack.Screen name="Information" component={InformationTab} /> 
 
       </Stack.Navigator>
@@ -90,6 +94,7 @@ const InformationTab = () => {
     >
       <Tab.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }}/>
       <Tab.Screen name="InformationScreen" component={InformationScreen} options={{ headerShown: false }}/>
+  
     </Tab.Navigator>
   );
 };

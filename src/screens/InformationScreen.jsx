@@ -23,6 +23,9 @@ const InformationScreen = () => {
     const handleProfie = () => {
         navigation.navigate('Profile');
     }
+    const handleLichHen = () => {
+        navigation.navigate('LichHen');
+    }
 
     return (
         <View className="flex-1">
@@ -55,13 +58,13 @@ const InformationScreen = () => {
                     </View>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleLichHen}>
                 <View className="bg-white mx-4 rounded-xl p-4 border-b-[1px] border-gray-200">
                     <View className="flex-row items-center">
                         <MaterialIcons name="date-range" size={24} color="black" />
                         <Text className="text-black font-semibold text-[18px] ml-4">Lịch hẹn của bạn</Text>
                         <View className="ml-auto">
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={handleLichHen}>
                                 <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
                             </TouchableOpacity>
                         </View>

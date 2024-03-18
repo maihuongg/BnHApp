@@ -228,7 +228,7 @@ const HomeScreen = () => {
               horizontal
               showsHorizontalScrollIndicator={false} >
               {fiveEvent.map((result) => (
-                <View className="bg-white">
+                <View className="bg-white w-300 h-200">
                   <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
                     <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
                     <View className="mb-2">
