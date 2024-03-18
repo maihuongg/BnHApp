@@ -15,7 +15,7 @@ const Sukien = () => {
             console.log("fuuuf");
             try {
                 console.log("faaasf");
-                const response = await fetch("http://192.168.246.136:8000/v1/user/event", {
+                const response = await fetch("http://192.168.1.3:8000/v1/user/event", {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'

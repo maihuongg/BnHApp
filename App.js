@@ -21,37 +21,44 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import DetailEventScreen from './src/screens/DetailEventScreen';
 import LichHenScreen from'./src/screens/LichHenScreen';
 import Sukien from './src/screens/Sukien';
+import HospitalScreen from './src/screens/HospitalScreen'
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
 
 const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Test" screenOptions={{ headerShown: false }} headerMode="none">
 
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="LichHen" component={LichHenScreen} />
+        {/* <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="LichHen" component={LichHenScreen} /> */}
         
-        {/* <Stack.Screen name="Auth" component={AuthStack} /> */}
-        {/* <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} /> */}
-        <Stack.Screen name="Information" component={InformationTab} /> 
+        <Stack.Screen name="Auth" component={AuthStack} />
+        <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} />
+        <Stack.Screen name="Event" component={EventTab} /> 
+        <Stack.Screen name="Hospital" component={HospitalTab} /> 
+        
+        <Stack.Screen name="InformationScreen" component={InformationTab} /> 
+
 
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-
-const HomeTab = () => {
+const HospitalTab = () => {
   return (
     <Tab.Navigator
-      initialRouteName="HomeScreen"
+      initialRouteName="Hospital"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
           if (route.name === 'HomeScreen') {
             iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Sukien') {
+            iconName = focused ? 'calendar' : 'calendar-outline';
+          } else if (route.name === 'Hospital') {
+            iconName = focused ? 'medical' : 'medical-outline';
           } else if (route.name === 'InformationScreen') {
             iconName = focused ? 'person' : 'person-outline';
           }
@@ -65,6 +72,77 @@ const HomeTab = () => {
       }}
     >
       <Tab.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Sukien" component={Sukien} options={{ headerShown: false }} />
+      <Tab.Screen name="Hospital" component={HospitalScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="InformationScreen" component={InformationScreen} options={{ headerShown: false }} />
+
+    </Tab.Navigator>
+  );
+};
+const EventTab = () => {
+  return (
+    <Tab.Navigator
+      initialRouteName="Sukien"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'HomeScreen') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Sukien') {
+            iconName = focused ? 'calendar' : 'calendar-outline';
+          } else if (route.name === 'Hospital') {
+            iconName = focused ? 'medical' : 'medical-outline';
+          } else if (route.name === 'InformationScreen') {
+            iconName = focused ? 'person' : 'person-outline';
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        }, tabBarLabel: () => null
+      })}
+      tabBarOptions={{
+        activeTintColor: '#0891b2',
+        inactiveTintColor: '#0891b2',
+      }}
+    >
+      <Tab.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Sukien" component={Sukien} options={{ headerShown: false }} />
+      <Tab.Screen name="Hospital" component={HospitalScreen} options={{ headerShown: false }} />
+
+      <Tab.Screen name="InformationScreen" component={InformationScreen} options={{ headerShown: false }} />
+    </Tab.Navigator>
+  );
+};
+
+const HomeTab = () => {
+  return (
+    <Tab.Navigator
+      initialRouteName="HomeScreen"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === 'HomeScreen') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Sukien') {
+            iconName = focused ? 'calendar' : 'calendar-outline';
+          } else if (route.name === 'Hospital') {
+            iconName = focused ? 'medical' : 'medical-outline';
+          } else if (route.name === 'InformationScreen') {
+            iconName = focused ? 'person' : 'person-outline';
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        }, tabBarLabel: () => null
+      })}
+      tabBarOptions={{
+        activeTintColor: '#0891b2',
+        inactiveTintColor: '#0891b2',
+      }}
+    >
+      <Tab.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Sukien" component={Sukien} options={{ headerShown: false }} />
+      <Tab.Screen name="Hospital" component={HospitalScreen} options={{ headerShown: false }} />
+
       <Tab.Screen name="InformationScreen" component={InformationScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
@@ -80,6 +158,10 @@ const InformationTab = () => {
 
           if (route.name === 'HomeScreen') {
             iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Sukien') {
+            iconName = focused ? 'calendar' : 'calendar-outline';
+          } else if (route.name === 'Hospital') {
+            iconName = focused ? 'medical' : 'medical-outline';
           } else if (route.name === 'InformationScreen') {
             iconName = focused ? 'person' : 'person-outline';
           }
@@ -93,6 +175,8 @@ const InformationTab = () => {
       }}
     >
       <Tab.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }}/>
+      <Tab.Screen name="Sukien" component={Sukien} options={{ headerShown: false }} />
+      <Tab.Screen name="Hospital" component={HospitalScreen} options={{ headerShown: false }} />
       <Tab.Screen name="InformationScreen" component={InformationScreen} options={{ headerShown: false }}/>
   
     </Tab.Navigator>
@@ -109,7 +193,7 @@ const AuthStack = () => {
       <Stack.Screen name="CodeScreen" component={CodeScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen}/>
       <Stack.Screen name="DetailScreen" component={DetailEventScreen} />
-      <Stack.Screen name="Sukien" component={Sukien}/>
+      {/* <Stack.Screen name="Sukien" component={Sukien}/> */}
     </Stack.Navigator>
   );
 };
