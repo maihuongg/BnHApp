@@ -30,11 +30,11 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Test" screenOptions={{ headerShown: false }} headerMode="none">
 
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="LichHen" component={LichHenScreen} />
+        {/* <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="LichHen" component={LichHenScreen} /> */}
         
-        {/* <Stack.Screen name="Auth" component={AuthStack} /> */}
-        {/* <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="Auth" component={AuthStack} />
+        <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} />
         <Stack.Screen name="Information" component={InformationTab} /> 
 
       </Stack.Navigator>
@@ -110,6 +110,7 @@ const AuthStack = () => {
       <Stack.Screen name="Profile" component={ProfileScreen}/>
       <Stack.Screen name="DetailScreen" component={DetailEventScreen} />
       <Stack.Screen name="Sukien" component={Sukien}/>
+      <Stack.Screen name="LichHen" component={LichHenScreen} />
     </Stack.Navigator>
   );
 };

@@ -35,7 +35,7 @@ const LoginScreen = () => {
         } else {
             dispatch(loginStart());
             try {
-                const response = await fetch('http://192.168.1.3:8000/v1/auth/login', {
+                const response = await fetch('http://192.168.246.136:8000/v1/auth/login', {
                     method: 'POST',
                     body: JSON.stringify(newUser),
                     headers: {
@@ -59,7 +59,7 @@ const LoginScreen = () => {
                     dispatch(allEventStart());
                     console.log("five");
                     try {
-                        const response = await fetch("http://192.168.1.3:8000/v1/user/bestfiveevent", {
+                        const response = await fetch("http://192.168.246.136:8000/v1/user/bestfiveevent", {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -82,7 +82,7 @@ const LoginScreen = () => {
                     }
                     dispatch(userprofileStart());
                     try {
-                        const response1 = await fetch("http://192.168.1.3:8000/v1/user/profile/" + userId, {
+                        const response1 = await fetch("http://192.168.246.136:8000/v1/user/profile/" + userId, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
