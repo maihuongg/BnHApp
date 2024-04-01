@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGODB_URL, {
         console.error("Error connecting to database:", error);
     });
 //const allowedOrigins = ['http://localhost:3000', 'http://localhost:4000'];
-const allowedOrigins = ['http://localhost:19006', 'exp://192.168.43.2:8081'];
+const allowedOrigins = ['http://localhost:19006', 'exp://192.168.251.136:8081'];
 
 
 app.use(cors({

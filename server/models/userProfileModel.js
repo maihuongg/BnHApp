@@ -59,6 +59,11 @@ const userProfileSchema = new mongoose.Schema(
             default: null,
 
         },
+        reward: {
+            type: Number,
+            require: true,
+            default: 0,
+        },
         history: [{
             id_event: {
                 type: String,

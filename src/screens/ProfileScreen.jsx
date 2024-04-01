@@ -1,4 +1,4 @@
-import { View, Text, TextInput, ScrollView, Modal, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, ScrollView, Modal, Image, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Entypo } from "@expo/vector-icons";
 import moment from "moment";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import {
     userprofileStart,
     userprofileSuccess,
@@ -28,7 +29,7 @@ const ProfileScreen = () => {
     const dispatch = useDispatch();
 
     const [fullName, setfullName] = useState(userPro?.fullName);
-    const [birthDay, setbirthDay] = useState(new Date());
+    const [birthDay, setbirthDay] = useState(moment(userPro?.birthDay).format('DD/MM/YYYY'));
 
     const [gender, setGender] = useState(userPro?.gender);
     const [bloodgroup, setbloodGroup] = useState(userPro?.bloodgroup);
@@ -37,8 +38,16 @@ const ProfileScreen = () => {
     const [email, setEmail] = useState(userPro?.email);
 
     const [modalVisible, setModalVisible] = useState(false)
-    // const [selected, setSelected] = useState(null);
-    // const [bloodGroup, setBloodGroup] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
 
     const bloodGroupData = [
         { key: 'A-', value: 'A-' },
@@ -60,10 +69,17 @@ const ProfileScreen = () => {
     ]
 
     useEffect(() => {
+        (async () => {
+            // Yêu cầu quyền truy cập vào thư viện ảnh khi component được tải lần đầu
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert('Quyền truy cập bị từ chối', 'Bạn cần cấp quyền truy cập để chọn ảnh từ thư viện.');
+            }
+        })();
         const handleProfile = async () => {
             dispatch(userprofileStart());
             try {
-                const response1 = await fetch("http://192.168.246.136:8000/v1/user/profile/" + userId, {
+                const response1 = await fetch("http://192.168.251.136:8000/v1/user/profile/" + userId, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -75,6 +91,7 @@ const ProfileScreen = () => {
                 } else {
                     const data1 = await response1.json();
                     dispatch(userprofileSuccess(data1));
+                    console.log("bbb");
                 }
             } catch (error) {
                 dispatch(userprofileFailed());
@@ -97,7 +114,7 @@ const ProfileScreen = () => {
         };
         dispatch(userprofileStart());
         try {
-            const response = await fetch("http://192.168.246.136:8000/v1/user/profile/" + userId, {
+            const response = await fetch("http://192.168.251.136:8000/v1/user/profile/" + userId, {
                 method: 'PUT',
                 body: JSON.stringify(updateUser),
                 headers: {
@@ -108,12 +125,81 @@ const ProfileScreen = () => {
 
             if (!response.ok) {
                 dispatch(userprofileFailed());
-                Alert.alert('Lỗi', 'Đã xảy ');
+                Alert.alert('Thất bại', 'Không thể cập nhật thông tin');
             } else {
                 const data = await response.json();
                 dispatch(userprofileSuccess(data));
                 setModalVisible(false);
                 Alert.alert('Thành công', 'Đã cập nhật thông tin.');
+                navigation.navigate('Profile');
+            }
+        } catch (error) {
+            dispatch(userprofileFailed());
+            Alert.alert('Lỗi', 'Đã xảy ra lỗi không mong muốn.');
+        }
+    }
+
+    const handleChooseImage = async () => {
+        try {
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            });
+
+            if (!result.canceled) {
+                
+                console.log("uri", result.assets[0].uri);
+                const base64Image = await convertImageToBase64(result.assets[0].uri);
+                console.log("Base64 Image:", base64Image);
+                setSelectedImage(base64Image);
+            }
+        } catch (error) {
+            console.error('Lỗi khi chọn ảnh:', error);
+        }
+    };
+
+    const convertImageToBase64 = async (imageUri) => {
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
+        const base64String = await blobToBase64(blob);
+        return base64String;
+    };
+
+    const blobToBase64 = (blob) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = reject;
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+            reader.readAsDataURL(blob);
+        });
+    };
+
+    const handleUpdateImage = async () => {
+        const formData = new FormData();
+        formData.append('images', selectedImage);
+
+        dispatch(userprofileStart());
+
+        try {
+            const response = await fetch("http://192.168.251.136:8000/v1/user/profileimage/" + userId, {
+                method: 'PUT',
+                body: formData,
+                headers: {
+                    token: `Bearer ${accessToken}`
+                }
+            });
+
+            if (!response.ok) {
+                dispatch(userprofileFailed());
+                Alert.alert('Thất bại', 'Không thể cập nhật hình ảnh');
+            } else {
+                const data = await response.json();
+                dispatch(userprofileSuccess(data));
+                Alert.alert('Thành công', 'Đã cập nhật ảnh đại diện.');
                 navigation.navigate('Profile');
             }
         } catch (error) {
@@ -137,7 +223,42 @@ const ProfileScreen = () => {
             <View className="flex-row w-32 h-32 bg-white  rounded-full mx-auto py-2 -mt-16 shadow-md">
                 <Image
                     className="w-28 h-28 rounded-full mx-auto items-center justify-centerr"
-                    source={require("../../assets/2.png")} ></Image>
+                    source={{ uri: userPro?.images }} ></Image>
+                <TouchableOpacity style={{ position: 'absolute', bottom: 10, right: 10 }} onPress={handleOpenModal}>
+                    <FontAwesome5 name="edit" size={20} style={{ color: 'rgb(8, 145, 178)' }} />
+                </TouchableOpacity>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={showModal}
+                    onRequestClose={() => {
+                        setModalVisible(!showModal);
+                    }}
+                >
+                    <View className="flex-1 bg-rnb justify-center items-center">
+                        <View className="h-[45%] w-[75%]">
+
+                            <View style={{ flex: 1, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center', borderRadius: 15 }}>
+                                <Text>Ảnh đại diện</Text>
+
+                                <Image
+                                    source={{ uri: selectedImage ? selectedImage : (userPro?.images ? userPro.images : '') }}
+                                    style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 1, borderColor: 'rgb(8, 145, 178)' }}
+                                />
+                                <TouchableOpacity onPress={handleChooseImage}>
+                                    <View className="flex-row bg-blue rounded-md mx-24 p-2 mt-3 items-center justify-center">
+                                        <Text className="text-white font-bold text-sx ml-4">Chọn ảnh</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                                    <Button title="Lưu lại" disabled={!selectedImage} style={{ marginRight: 10 }} onPress={handleUpdateImage}/>
+                                    <Button title="Hủy" onPress={handleCloseModal} />
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+
+                </Modal>
             </View>
 
             <View className=" justify-center items-center mx-2 ">

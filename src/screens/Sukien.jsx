@@ -7,57 +7,149 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
 import TopBar from './components/Topbar';
+import {
+    eventProfileStart,
+    eventProfileSuccess,
+    eventProfileFailed,
+    hospitalStart,
+    hospitalSuccess,
+    hospitalFailed
+} from "../redux/eventSlice";
 const Sukien = () => {
+    const user = useSelector((state) => state.auth.login.currentUser);
+    const userId = user?._id;
+    const accessToken = user?.accessToken;
     const [data, setData] = useState([]);
+    const [data1, setData1] = useState([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1); // Đếm trang
     const [hasMore, setHasMore] = useState(true); // Xác định xem còn dữ liệu để tải nữa hay không
     const [allDataLoaded, setAllDataLoaded] = useState(false); // Xác định khi tất cả dữ liệu đã được tải
-
+    const [searchQuery, setSearchQuery] = useState("");
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [visible, setVisible] = useState("Tất cả");
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const handleToggleDropdown = () => {
+        setShowDropdown(!showDropdown);
+    };
+    console.log("fsfsf");
     useEffect(() => {
-        handleEvent(); // Khi component được tạo lần đầu, gọi handleEvent để tải dữ liệu
-    }, []); 
+        const handleEvent = async () => {
+            console.log("fuuuf");
+            try {
+                console.log("faaasf");
+                const response = await fetch("http://192.168.251.136:8000/v1/user/event", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-    const handleEvent = async () => {
+                console.log("fdddf");
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("data", data)
+                    setData(data.allEvent);
+                    setData1(data.allEvent);
+                }
+                else {
+                    console.log("err");
+                };
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+        handleEvent();
+    }, [setData]);
+
+    const fetchDataSearcg = async (keyword) => {
         try {
-            setLoading(true); // Bắt đầu tải dữ liệu, đặt trạng thái loading là true
-            const response = await fetch(`http://192.168.1.3:8000/v1/user/event?page=${page}`, {
+            const response2 = await fetch(`http://192.168.251.136:8000/v1/user/search/event?keyword=${keyword}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-    
-            if (response.ok) {
-                const newData = await response.json();
-                if (newData.allEvent.length === 0) {
-                    if (page === 1) {
-                        setAllDataLoaded(true); // Nếu trang hiện tại là trang đầu tiên và không có dữ liệu mới, đặt allDataLoaded là true
-                    } else {
-                        setHasMore(false); // Nếu trang hiện tại không phải là trang đầu tiên và không có dữ liệu mới, không còn dữ liệu để tải nữa
-                    }
-                } else {
-                    setData(prevData => [...prevData, ...newData.allEvent]); // Kết hợp dữ liệu mới với dữ liệu đã có
-                    setPage(prevPage => prevPage + 1); // Tăng số trang lên khi có dữ liệu mới
-                }
-            } else {
-                console.log("Error fetching data");
+
+            if (response2.ok) {
+                const data2 = await response2.json();
+                setData(data2);
             }
+            else return 0;
         } catch (error) {
             console.error("Error fetching data:", error);
-        } finally {
-            setLoading(false); // Kết thúc quá trình tải dữ liệu, đặt trạng thái loading là false
         }
     };
-    
-    const handleScroll = (event) => {
-        const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
-        const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
-        if (isCloseToBottom && !loading && hasMore) {
-            handleEvent(); // Gọi handleEvent khi cuộn đến cuối trang và còn dữ liệu để tải
+
+    const handleFilterEventFuture = () => {
+        // Lọc các sự kiện có date_start lớn hơn ngày hiện tại
+        const filteredData = data1.filter(event => new Date(event.date_start) > new Date());
+        setData(filteredData);
+        setVisible("Sắp diễn ra");
+        setShowDropdown(false);
+    };
+
+    const handleFilterEventCurrent = () => {
+        // Lọc các sự kiện có date_start bé hơn hoặc bằng ngày hiện tại
+        const filteredData = data1.filter(event => new Date(event.date_start) <= new Date());
+        setData(filteredData);
+        setVisible("Đang diễn ra");
+        setShowDropdown(false);
+    };
+    const handleFilterAllEvent = () => {
+        setData(data1);
+        setVisible("Tất cả");
+        setShowDropdown(false);
+    };
+
+    const handleToDetailEvent = async (eventId, hospitalId) => {
+        if (user) {
+            console.log("fffff");
+            dispatch(eventProfileStart());
+            try {
+                const response1 = await fetch("http://192.168.251.136:8000/v1/user/getevent/" + eventId, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        token: `Bearer ${accessToken}`
+                    }
+                });
+                if (!response1.ok) {
+                    dispatch(eventProfileFailed());
+                } else {
+                    const data1 = await response1.json();
+                    dispatch(eventProfileSuccess(data1));
+                }
+            } catch (error) {
+                dispatch(eventProfileFailed());
+            }
+
+            dispatch(hospitalStart());
+            try {
+                const response2 = await fetch("http://192.168.251.136:8000/v1/user/gethospital/" + hospitalId, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        token: `Bearer ${accessToken}`
+                    }
+                });
+                if (!response2.ok) {
+                    dispatch(hospitalFailed());
+                } else {
+                    const data2 = await response2.json();
+                    dispatch(hospitalSuccess(data2));
+                }
+            } catch (error) {
+                dispatch(hospitalFailed());
+            }
+
+            navigation.navigate('DetailScreen');
+        } else {
+            Alert.alert('Thông báo', 'Cần đăng nhập để xem chi tiết.');
+            navigation.navigate('LoginScreen');
         }
     };
-    
     return (
         <SafeAreaView className=" flex-1 bg-white pt-6">
             <View className="bg-white flex-row p-1 items-center ml-4">
@@ -76,52 +168,65 @@ const Sukien = () => {
             <View className="flex-row p-2 mx-4 mt-2 border-2 border-blue rounded-lg bg-gray">
                 <FontAwesome name="search" size={24} color='#0891b2' />
                 <TextInput
+                    value={searchQuery}
+                    onChangeText={(text) => setSearchQuery(text)}
                     className="text-blue pl-1"
                     placeholder=" Nhập tên sự kiện / bệnh viện" />
                 <View className="ml-auto">
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={() => fetchDataSearcg(searchQuery)}>
                         <MaterialIcons name="arrow-forward" size={20} color="black" />
                     </TouchableOpacity>
                 </View>
             </View>
             <View className="flex-auto bg-silver">
-                <Text className="text-xl font-bold text-blue px-4 my-2">Sự kiện</Text>
-                <SafeAreaView style={{ flex: 1, backgroundColor: 'white', paddingTop: 6 }}>
-                    {/* Phần giao diện hiển thị sự kiện */}
-                    <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
-                        {data.map((result, index) => (
-                            <TouchableOpacity key={index} style={{ backgroundColor: 'white', borderRadius: 8, paddingHorizontal: 16, paddingVertical: 12, marginHorizontal: 8, marginVertical: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.2, shadowRadius: 1.41, elevation: 2 }}>
-                                <View className="bg-white">
-                                    <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
-                                        <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
-                                        <View className="mb-2">
-                                            <Text className="text-lg font-bold" >{result.eventName}</Text>
-                                            <View className="flex-row">
-                                                <Text>Địa chỉ : </Text>
-                                                <Text className="font-bold">{result.address}</Text>
-                                            </View>
-                                            <View className="flex-row">
-                                                <Text>Số lượng đăng ký : {result.listusers.count}/</Text>
-                                                <Text className="font-bold">{result.amount}</Text>
-                                            </View>
-                                            <TouchableOpacity
-                                                onPress={() => handleToDetailEvent(result._id, result.hospital_id)}
-                                                className="items-center bg-blue p-2 mx-8 my-2 rounded-md" >
-                                                <View className="flex-row">
-                                                    <Text className="text-white font-bold">Xem chi tiết</Text>
-                                                </View>
-                                            </TouchableOpacity>
+                <View className="flex-row">
+                    <Text className="text-xl font-bold text-blue px-4 my-2">Sự kiện</Text>
+                    <TouchableOpacity className="flex-row ml-auto " onPress={handleToggleDropdown}>
+                        <Text className="text-xl font-bold text-blue px-4 my-2">{visible}</Text>
+                        <MaterialIcons name="filter-list" size={24} color="black" />
+                    </TouchableOpacity>
+                    {showDropdown && (
+                        <View style={{ position: 'absolute', top: 40, right: 0, backgroundColor: 'white', zIndex: 999, elevation: 10 }}>
+                            <TouchableOpacity onPress={handleFilterEventFuture}>
+                                <Text className="text-xl font-bold text-blue px-4 my-2">Sắp diễn ra</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleFilterEventCurrent}>
+                                <Text className="text-xl font-bold text-blue px-4 my-2">Đang diễn ra</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleFilterAllEvent}>
+                                <Text className="text-xl font-bold text-blue px-4 my-2">Tất cả</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                </View>
+                <ScrollView>
+                    {data.map((result) => (
+                        <View className="bg-white">
+                            <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
+                                <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
+                                <View className="mb-2">
+                                    <Text className="text-lg font-bold" >{result.eventName}</Text>
+                                    <View className="flex-row">
+                                        <Text>Địa chỉ : </Text>
+                                        <Text className="font-bold">{result.address}</Text>
+                                    </View>
+                                    <View className="flex-row">
+                                        <Text>Số lượng đăng ký : {result.listusers.count}/</Text>
+                                        <Text className="font-bold">{result.amount}</Text>
+                                    </View>
+                                    <TouchableOpacity
+                                        onPress={() => handleToDetailEvent(result._id, result.hospital_id)}
+                                        className="items-center bg-blue p-2 mx-8 my-2 rounded-md" >
+                                        <View className="flex-row">
+                                            <Text className="text-white font-bold">Xem chi tiết</Text>
                                         </View>
-
                                     </TouchableOpacity>
                                 </View>
+
                             </TouchableOpacity>
-                        ))}
-                    {allDataLoaded && <Text style={{ textAlign: 'center', color: 'gray', marginBottom: 10 }}>Không còn dữ liệu để tải</Text>}
-                    </ScrollView>
-              
-                </SafeAreaView>
-                
+                        </View>
+                    ))}
+                </ScrollView>
             </View>
         </SafeAreaView>
     )

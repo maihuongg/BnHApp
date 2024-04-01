@@ -55,7 +55,7 @@ const userController = {
             const accountId = req.params.account_id;
             console.log('accountId', accountId);
             const base64Image = req.body.images;
-            //console.log('img1',base64Image);
+            console.log('img1',base64Image);
 
             const result = await cloudinary.v2.uploader.upload(req.body.images, {
                 folder: 'profile',
@@ -248,6 +248,8 @@ const userController = {
                 status_user: "0",
             })
 
+            user.reward++;
+
             const updateProfile = await user.save();
 
             res.status(200).json({ message: "Đăng ký sự kiện thành công" });
@@ -326,6 +328,7 @@ const userController = {
 
             // xóa sự kiện trong người dùng
             userProfile.history.pull({ id_event: eventId });
+            userProfile.reward--;
 
             // Lưu thông tin người dùng đã cập nhật
             await userProfile.save();
