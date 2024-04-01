@@ -25,7 +25,8 @@ const DetailEventScreen = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const [show, setShow] = useState(false);
-    const [min, setMin] = useState(null);
+    const [datemin, setDatemin] = useState("");
+    const [datemax, setDatemax] = useState("");
     const currentDate = new Date();
     const [modalVisible, setModalVisible] = useState(false);
     const [confirmModal, setConfirmModal] = useState(false);
@@ -45,22 +46,14 @@ const DetailEventScreen = () => {
         setDate(currentDate);
     };
 
-    const minDate = new Date(); // Ngày hiện tại
-    const maxDate = new Date('2024-04-01'); // 
+
 
     useEffect(() => {
-        const currentDate = new Date();
-        const minDate = new Date(eventDetail.date_start);
-        if (currentDate < minDate) {
-            setMin(new Date(eventDetail.date_start).toISOString().split('T')[0]);
-        } else {
-            setMin(new Date().toISOString().split('T')[0]);
-        }
-        
+
         const handleDetailEvent = async () => {
             dispatch(eventProfileStart());
             try {
-                const response1 = await fetch("http://192.168.246.136:8000/v1/user/getevent/" + eventDetail._id, {
+                const response1 = await fetch("http://192.168.251.136:8000/v1/user/getevent/" + eventDetail._id, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -79,9 +72,10 @@ const DetailEventScreen = () => {
 
         }
         handleDetailEvent();
-    }, [dispatch, setMin]);
+    }, [dispatch ]);
 
-    console.log("date", min);
+  
+    
 
     const displayText = currentDate < new Date(eventDetail?.date_start) ? "Sắp diễn ra" : "Đang diễn ra";
 
@@ -102,7 +96,7 @@ const DetailEventScreen = () => {
             showNotificationErr("Cần cập nhập hồ sơ đầy đủ!");
         } else {
             try {
-                const response = await fetch("http://192.168.246.136:8000/v1/user/event/register", {
+                const response = await fetch("http://192.168.251.136:8000/v1/user/event/register", {
                     method: 'POST',
                     body: JSON.stringify(register),
                     headers: {
@@ -128,6 +122,23 @@ const DetailEventScreen = () => {
         }
 
     }
+
+    const handleShow = () => {
+        const currentDate = new Date();
+        const minDate = new Date(eventDetail.date_start);
+        console.log("date", new Date(eventDetail.date_start).toISOString().split('T')[0])
+        if (currentDate < minDate) {
+            setDatemin(new Date(eventDetail.date_start).toISOString().split('T')[0]);
+        } else {
+            setDatemin(new Date().toISOString().split('T')[0]);
+        }
+        console.log("date2", datemin);
+        setDatemax((new Date(eventDetail.date_end)).toISOString().split('T')[0]);
+        setModalVisible(true);
+    }
+
+    const minDate = new Date(datemin); // Ngày hiện tại
+    const maxDate = new Date(datemax); // 
 
     const handleContinute = () => {
         setModalVisible(false);
@@ -178,7 +189,7 @@ const DetailEventScreen = () => {
                     <Text className="text-black font-bold text-[16px] my-4 mx-2">Số lượng đã đăng ký: </Text>
                     <Text className="text-black font-normal text-[16px] my-4">{eventDetail?.listusers.count}/<Text className="text-black font-bold text-[16px]">{eventDetail?.amount}</Text></Text>
                 </View>
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                <TouchableOpacity onPress={handleShow}>
                     <View className="bg-blue mx-auto items-center justify-center rounded-md my-2">
                         <Text className="text-white font-bold p-3 mx-3 text-[16px]">ĐĂNG KÝ</Text>
                     </View>

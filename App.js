@@ -20,8 +20,10 @@ import { store, persistor } from './src/redux/store'; // Import store and persis
 import ProfileScreen from './src/screens/ProfileScreen';
 import DetailEventScreen from './src/screens/DetailEventScreen';
 import LichHenScreen from'./src/screens/LichHenScreen';
+import LichSuScreen from './src/screens/LichSuScreen';
 import Sukien from './src/screens/Sukien';
 import HospitalScreen from './src/screens/HospitalScreen'
+import RewardsScreen from './src/screens/RewardsScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -193,6 +195,9 @@ const AuthStack = () => {
       <Stack.Screen name="CodeScreen" component={CodeScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen}/>
       <Stack.Screen name="DetailScreen" component={DetailEventScreen} />
+      <Stack.Screen name="LichHen" component={LichHenScreen} />
+      <Stack.Screen name="LichSu" component={LichSuScreen} />
+      <Stack.Screen name="Reward" component={RewardsScreen} />
       {/* <Stack.Screen name="Sukien" component={Sukien}/> */}
     </Stack.Navigator>
   );

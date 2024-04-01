@@ -6,6 +6,7 @@ import { Alert } from 'react-native';
 import { Icon } from "react-native-elements";
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import TopBar from './components/Topbar';
 const InformationScreen = () => {
@@ -26,6 +27,13 @@ const InformationScreen = () => {
     const handleLichHen = () => {
         navigation.navigate('LichHen');
     }
+    const handleLichSu = () => {
+        navigation.navigate('LichSu');
+    }
+
+    const handleReward = () => {
+        navigation.navigate('Reward');
+    }
 
     return (
         <View className="flex-1">
@@ -37,7 +45,7 @@ const InformationScreen = () => {
             <View className="flex-row bg-white items-center rounded-xl mx-4 py-2 -mt-10 shadow-md">
                 <Image
                     className="w-24 h-24 rounded-full ml-4"
-                    source={require("../../assets/2.png")} ></Image>
+                    source={{ uri: userPro?.images }} ></Image>
                 <View className="flex-column justify-center items-center mx-2 ">
                     <Text className="text-black font-bold text-[18px]"> {userPro?.fullName}</Text>
                     <Text className="text-black text-[16px]"> {userPro?.address}</Text>
@@ -71,13 +79,13 @@ const InformationScreen = () => {
                     </View>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleLichSu}>
                 <View className="bg-white mx-4 rounded-xl p-4 border-b-[1px] border-semigray-100">
                     <View className="flex-row items-center">
                         <FontAwesome5 name="history" size={24} color="black" />
                         <Text className="text-black font-semibold text-[18px] ml-4">Lịch sử hiến máu</Text>
                         <View className="ml-auto">
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={handleLichSu}>
                                 <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
                             </TouchableOpacity>
                         </View>
@@ -91,6 +99,19 @@ const InformationScreen = () => {
                     <Text className="text-black font-semibold text-[18px] ml-4">Đổi mật khẩu</Text>
                     <View className="ml-auto">
                         <TouchableOpacity>
+                            <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleReward}>
+            <View className="bg-white mx-4 rounded-xl p-4 border-b-[1px] border-semigray-100">
+                <View className="flex-row items-center">
+                    <MaterialCommunityIcons name="medal" size={24} color="black" />
+                    <Text className="text-black font-semibold text-[18px] ml-4">Điểm thưởng</Text>
+                    <View className="ml-auto">
+                        <TouchableOpacity onPress={handleReward}>
                             <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
                         </TouchableOpacity>
                     </View>

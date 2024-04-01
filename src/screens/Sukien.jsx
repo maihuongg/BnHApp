@@ -7,15 +7,39 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
 import TopBar from './components/Topbar';
+import {
+    eventProfileStart,
+    eventProfileSuccess,
+    eventProfileFailed,
+    hospitalStart,
+    hospitalSuccess,
+    hospitalFailed
+} from "../redux/eventSlice";
 const Sukien = () => {
+    const user = useSelector((state) => state.auth.login.currentUser);
+    const userId = user?._id;
+    const accessToken = user?.accessToken;
     const [data, setData] = useState([]);
+    const [data1, setData1] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState(1); // Đếm trang
+    const [hasMore, setHasMore] = useState(true); // Xác định xem còn dữ liệu để tải nữa hay không
+    const [allDataLoaded, setAllDataLoaded] = useState(false); // Xác định khi tất cả dữ liệu đã được tải
+    const [searchQuery, setSearchQuery] = useState("");
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [visible, setVisible] = useState("Tất cả");
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const handleToggleDropdown = () => {
+        setShowDropdown(!showDropdown);
+    };
     console.log("fsfsf");
     useEffect(() => {
         const handleEvent = async () => {
             console.log("fuuuf");
             try {
                 console.log("faaasf");
-                const response = await fetch("http://192.168.1.3:8000/v1/user/event", {
+                const response = await fetch("http://192.168.251.136:8000/v1/user/event", {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
@@ -25,8 +49,9 @@ const Sukien = () => {
                 console.log("fdddf");
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("data",data)
+                    console.log("data", data)
                     setData(data.allEvent);
+                    setData1(data.allEvent);
                 }
                 else {
                     console.log("err");
@@ -37,6 +62,94 @@ const Sukien = () => {
         }
         handleEvent();
     }, [setData]);
+
+    const fetchDataSearcg = async (keyword) => {
+        try {
+            const response2 = await fetch(`http://192.168.251.136:8000/v1/user/search/event?keyword=${keyword}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response2.ok) {
+                const data2 = await response2.json();
+                setData(data2);
+            }
+            else return 0;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    const handleFilterEventFuture = () => {
+        // Lọc các sự kiện có date_start lớn hơn ngày hiện tại
+        const filteredData = data1.filter(event => new Date(event.date_start) > new Date());
+        setData(filteredData);
+        setVisible("Sắp diễn ra");
+        setShowDropdown(false);
+    };
+
+    const handleFilterEventCurrent = () => {
+        // Lọc các sự kiện có date_start bé hơn hoặc bằng ngày hiện tại
+        const filteredData = data1.filter(event => new Date(event.date_start) <= new Date());
+        setData(filteredData);
+        setVisible("Đang diễn ra");
+        setShowDropdown(false);
+    };
+    const handleFilterAllEvent = () => {
+        setData(data1);
+        setVisible("Tất cả");
+        setShowDropdown(false);
+    };
+
+    const handleToDetailEvent = async (eventId, hospitalId) => {
+        if (user) {
+            console.log("fffff");
+            dispatch(eventProfileStart());
+            try {
+                const response1 = await fetch("http://192.168.251.136:8000/v1/user/getevent/" + eventId, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        token: `Bearer ${accessToken}`
+                    }
+                });
+                if (!response1.ok) {
+                    dispatch(eventProfileFailed());
+                } else {
+                    const data1 = await response1.json();
+                    dispatch(eventProfileSuccess(data1));
+                }
+            } catch (error) {
+                dispatch(eventProfileFailed());
+            }
+
+            dispatch(hospitalStart());
+            try {
+                const response2 = await fetch("http://192.168.251.136:8000/v1/user/gethospital/" + hospitalId, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        token: `Bearer ${accessToken}`
+                    }
+                });
+                if (!response2.ok) {
+                    dispatch(hospitalFailed());
+                } else {
+                    const data2 = await response2.json();
+                    dispatch(hospitalSuccess(data2));
+                }
+            } catch (error) {
+                dispatch(hospitalFailed());
+            }
+
+            navigation.navigate('DetailScreen');
+        } else {
+            Alert.alert('Thông báo', 'Cần đăng nhập để xem chi tiết.');
+            navigation.navigate('LoginScreen');
+        }
+    };
     return (
         <SafeAreaView className=" flex-1 bg-white pt-6">
             <View className="bg-white flex-row p-1 items-center ml-4">
@@ -55,16 +168,37 @@ const Sukien = () => {
             <View className="flex-row p-2 mx-4 mt-2 border-2 border-blue rounded-lg bg-gray">
                 <FontAwesome name="search" size={24} color='#0891b2' />
                 <TextInput
+                    value={searchQuery}
+                    onChangeText={(text) => setSearchQuery(text)}
                     className="text-blue pl-1"
                     placeholder=" Nhập tên sự kiện / bệnh viện" />
                 <View className="ml-auto">
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={() => fetchDataSearcg(searchQuery)}>
                         <MaterialIcons name="arrow-forward" size={20} color="black" />
                     </TouchableOpacity>
                 </View>
             </View>
             <View className="flex-auto bg-silver">
-                <Text className="text-xl font-bold text-blue px-4 my-2">Sự kiện</Text>
+                <View className="flex-row">
+                    <Text className="text-xl font-bold text-blue px-4 my-2">Sự kiện</Text>
+                    <TouchableOpacity className="flex-row ml-auto " onPress={handleToggleDropdown}>
+                        <Text className="text-xl font-bold text-blue px-4 my-2">{visible}</Text>
+                        <MaterialIcons name="filter-list" size={24} color="black" />
+                    </TouchableOpacity>
+                    {showDropdown && (
+                        <View style={{ position: 'absolute', top: 40, right: 0, backgroundColor: 'white', zIndex: 999, elevation: 10 }}>
+                            <TouchableOpacity onPress={handleFilterEventFuture}>
+                                <Text className="text-xl font-bold text-blue px-4 my-2">Sắp diễn ra</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleFilterEventCurrent}>
+                                <Text className="text-xl font-bold text-blue px-4 my-2">Đang diễn ra</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleFilterAllEvent}>
+                                <Text className="text-xl font-bold text-blue px-4 my-2">Tất cả</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                </View>
                 <ScrollView>
                     {data.map((result) => (
                         <View className="bg-white">

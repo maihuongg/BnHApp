@@ -37,7 +37,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const handleBestEvent = async () => {
       try {
-        const response2 = await fetch("http://192.168.1.3:8000/v1/user/bestevent", {
+        const response2 = await fetch("http://192.168.251.136:8000/v1/user/bestevent", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -64,7 +64,7 @@ const HomeScreen = () => {
     if (user) {
       dispatch(eventProfileStart());
       try {
-        const response1 = await fetch("http://192.168.1.3:8000/v1/user/getevent/" + eventId, {
+        const response1 = await fetch("http://192.168.251.136:8000/v1/user/getevent/" + eventId, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ const HomeScreen = () => {
 
       dispatch(hospitalStart());
       try {
-        const response2 = await fetch("http://192.168.1.3:8000/v1/user/gethospital/" + hospitalId, {
+        const response2 = await fetch("http://192.168.251.136:8000/v1/user/gethospital/" + hospitalId, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ const HomeScreen = () => {
 
   const fetchDataSearcg = async (keyword) => {
     try {
-      const response2 = await fetch(`http://192.168.1.3:8000/v1/user/search/event?keyword=${keyword}`, {
+      const response2 = await fetch(`http://192.168.251.136:8000/v1/user/search/event?keyword=${keyword}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

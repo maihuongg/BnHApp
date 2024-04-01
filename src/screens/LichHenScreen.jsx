@@ -30,7 +30,7 @@ const LichHenScreen = () => {
     const dispatch = useDispatch();
 
     const handleBack = () => {
-        navigation.navigate('Information');
+        navigation.navigate('InformationScreen');
     }
 
     const [date, setDate] = useState(new Date());
@@ -38,6 +38,10 @@ const LichHenScreen = () => {
     const [datemin, setDatemin] = useState("");
     const [datemax, setDatemax] = useState("");
     const [eventId, setEventId] = useState("");
+    const [refreshKey, setRefreshKey] = useState(0);
+    const reloadPage = () => {
+        setRefreshKey(prevKey => prevKey + 1);
+      };
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -50,7 +54,7 @@ const LichHenScreen = () => {
             dispatch(userprofileStart());
             
             try {
-                const response1 = await fetch("http://192.168.246.136:8000/v1/user/profile/" + userId, {
+                const response1 = await fetch("http://192.168.251.136:8000/v1/user/profile/" + userId, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -69,12 +73,12 @@ const LichHenScreen = () => {
             }
         }
         handleProfile();
-    }, [dispatch]);
+    }, [dispatch, refreshKey]);
 
     
     const handleShow = async (eventid) => {
         try {
-            const response1 = await fetch("http://192.168.246.136:8000/v1/user/getevent/" + eventid, {
+            const response1 = await fetch("http://192.168.251.136:8000/v1/user/getevent/" + eventid, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -113,7 +117,7 @@ const LichHenScreen = () => {
             date: date,
         }
         try {
-            const response1 = await fetch("http://192.168.246.136:8000/v1/user/event/updateRegisterDate", {
+            const response1 = await fetch("http://192.168.251.136:8000/v1/user/event/updateRegisterDate", {
                 method: 'PUT',
                 body: JSON.stringify(update),
                 headers: {
@@ -127,8 +131,36 @@ const LichHenScreen = () => {
             } else {
                 const data1 = await response1.json();
                 setModalVisible(false);
+                // navigation.navigate('LichHen');
                 Alert.alert('Thành công', 'Cập nhật lịch hẹn thành công.');
-                navigation.navigate('LichHen');
+                reloadPage();
+            }
+        } catch (error) {
+            Alert.alert('Lỗi', 'Đã xảy ra lỗi không mong muốn.');
+        }
+    }
+
+    const handleDelete = async (id) => {
+        const deleteRegister = {
+            eventId: id,
+            userId: userPro._id,
+        }
+        try {
+            const response1 = await fetch("http://192.168.251.136:8000/v1/user/event/deleteRegister", {
+                method: 'DELETE',
+                body: JSON.stringify(deleteRegister),
+                headers: {
+                    'Content-Type': 'application/json',
+                    token: `Bearer ${accessToken}`
+                }
+            });
+            if (!response1.ok) {
+                const err = await response1.json();
+                Alert.alert('Thất bại', err.message);
+            } else {
+                const data1 = await response1.json();
+                Alert.alert('Thành công', data1.message);
+                reloadPage();
             }
         } catch (error) {
             Alert.alert('Lỗi', 'Đã xảy ra lỗi không mong muốn.');
@@ -174,7 +206,7 @@ const LichHenScreen = () => {
                                     <TouchableOpacity className="mr-2" onPress={() => handleShow(donation.id_event)}>
                                         <FontAwesome name="edit" size={24} color="black" />
                                     </TouchableOpacity>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity className="mr-2" onPress={() => handleDelete(donation.id_event)}>
                                         <MaterialIcons name="clear" size={24} color="black" />
                                     </TouchableOpacity>
                                     <Modal
