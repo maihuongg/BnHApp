@@ -15,17 +15,26 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "useNextNotificationsApi": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "useNextNotificationsApi": true
       },
+      "googleServicesFile": "google-services.json",
       "package": "huong.BnHAndroid"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "BASE_URL": "http://192.168.1.3:8000",
+      "eas": {
+        "projectId": "41041e3c-18fc-4bc5-86e9-25035f54fbe2"
+      }
     }
   }
 }

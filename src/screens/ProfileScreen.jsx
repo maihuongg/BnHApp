@@ -123,7 +123,7 @@ const ProfileScreen = () => {
     }
 
     const handleBack = () => {
-        navigation.navigate('Information');
+        navigation.navigate('InformationScreen');
     }
     return (
         <View className="flex-1">

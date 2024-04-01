@@ -7,6 +7,7 @@ import { Icon } from "react-native-elements";
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import TopBar from './components/Topbar';
 const InformationScreen = () => {
     // const user = useSelector((state) => state.auth.login.currentUser);
@@ -25,6 +26,9 @@ const InformationScreen = () => {
     }
     const handleLichHen = () => {
         navigation.navigate('LichHen');
+    }
+    const handleThongKe = () => {
+        navigation.navigate('ThongKe');
     }
 
     return (
@@ -89,6 +93,19 @@ const InformationScreen = () => {
                 <View className="flex-row items-center">
                     <MaterialIcons name="password" size={24} color="black" />
                     <Text className="text-black font-semibold text-[18px] ml-4">Đổi mật khẩu</Text>
+                    <View className="ml-auto">
+                        <TouchableOpacity>
+                            <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleThongKe}>
+            <View className="bg-white mx-4 rounded-xl p-4 border-b-[1px] border-semigray-100">
+                <View className="flex-row items-center">
+                <Ionicons name="analytics" size={24} color="black" />
+                    <Text className="text-black font-semibold text-[18px] ml-4">Xem thống kê</Text>
                     <View className="ml-auto">
                         <TouchableOpacity>
                             <MaterialIcons name="arrow-forward-ios" size={20} color="black" />

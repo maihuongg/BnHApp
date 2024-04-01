@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "237852383361",
+    "project_id": "bnh-notifications",
+    "storage_bucket": "bnh-notifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237852383361:android:0fd73ddd087419ab9dd580",
+        "android_client_info": {
+          "package_name": "com.BnHnotifications"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_85vLhCDi7UmBX08PvOsua-HUOxGM9Jc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
