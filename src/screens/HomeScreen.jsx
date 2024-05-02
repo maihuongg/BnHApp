@@ -269,31 +269,31 @@ const HomeScreen = () => {
           <View className="bg-white mx-2 ">
             <View className="flex-row mx-4 my-2">
               <FontAwesome name="id-card" size={24} color="black" />
-              <Text className="font-normal text-black mx-2" > Mang theo CCCD / CMND / hộ chiếu</Text>
+              <Text className="font-normal text-black mx-2 text-justify" > Mang theo CCCD / CMND / hộ chiếu</Text>
             </View>
             <View className="flex-row mx-4 my-2">
               <MaterialCommunityIcons name="needle" size={24} color="black" />
-              <Text className="font-normal text-black mx-2" > Không nghiện ma túy, rượu bia và các chất kích thích</Text>
+              <Text className="font-normal text-black mx-2 text-justify" > Không nghiện ma túy, rượu bia và các chất kích thích</Text>
             </View>
             <View className="flex-row mx-4 my-2">
               <FontAwesome5 name="virus" size={24} color="black" />
-              <Text className="font-normal text-black mx-2" > Không mắc hoặc không có các hành vi nguy cơ lây nhiễm HIV, không nhiễm viêm gan B, viêm gan C, và các virus lây qua đường truyền máu</Text>
+              <Text className="font-normal text-black mx-2 text-justify" > Không mắc hoặc không có các hành vi nguy cơ lây nhiễm HIV, không nhiễm viêm gan B, viêm gan C, và các virus lây qua đường truyền máu</Text>
             </View>
             <View className="flex-row mx-4 my-2">
               <FontAwesome name="heartbeat" size={24} color="black" />
-              <Text className="font-normal text-black mx-2" > Không mắc các bệnh mãn tính hoặc cấp tính về tim mạch, huyết áp, hô hấp, dạ dày…</Text>
+              <Text className="font-normal text-black mx-2 text-justify" > Không mắc các bệnh mãn tính hoặc cấp tính về tim mạch, huyết áp, hô hấp, dạ dày…</Text>
             </View>
             <View className="flex-row mx-4 my-2">
               <MaterialIcons name="18-up-rating" size={24} color="black" />
-              <Text className="font-normal text-black mx-2" > Người khỏe mạnh trong độ tuổi từ đủ 18 đến 60 tuổi</Text>
+              <Text className="font-normal text-black mx-2 text-justify" > Người khỏe mạnh trong độ tuổi từ đủ 18 đến 60 tuổi</Text>
             </View>
             <View className="flex-row mx-4 my-2">
               <FontAwesome5 name="weight" size={24} color="black" />
-              <Text className="font-normal text-black mx-2" > Cân nặng: Nam ≥ 45 kg & Nữ ≥ 45 kg</Text>
+              <Text className="font-normal text-black mx-2 text-justify" > Cân nặng: Nam ≥ 45 kg & Nữ ≥ 45 kg</Text>
             </View>
             <View className="flex-row mx-4 my-2">
               <MaterialIcons name="date-range" size={24} color="black" />
-              <Text className="font-normal text-black mx-2" > Thời gian tối thiểu giữa 2 lần hiến máu là 12 tuần đối với cả Nam và Nữ</Text>
+              <Text className="font-normal text-black mx-2 text-justify" > Thời gian tối thiểu giữa 2 lần hiến máu là 12 tuần đối với cả Nam và Nữ</Text>
             </View>
           </View>
 
