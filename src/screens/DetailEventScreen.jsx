@@ -15,6 +15,7 @@ import {
     eventProfileSuccess,
     eventProfileFailed,
 } from "../redux/eventSlice";
+import baseUrl from '../utils/constant';
 const DetailEventScreen = () => {
     const user = useSelector((state) => state.auth.login.currentUser);
     const accessToken = user?.accessToken
@@ -53,7 +54,7 @@ const DetailEventScreen = () => {
         const handleDetailEvent = async () => {
             dispatch(eventProfileStart());
             try {
-                const response1 = await fetch("http://192.168.251.136:8000/v1/user/getevent/" + eventDetail._id, {
+                const response1 = await fetch(`${baseUrl}/v1/user/getevent/` + eventDetail._id, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -96,7 +97,7 @@ const DetailEventScreen = () => {
             showNotificationErr("Cần cập nhập hồ sơ đầy đủ!");
         } else {
             try {
-                const response = await fetch("http://192.168.251.136:8000/v1/user/event/register", {
+                const response = await fetch(`${baseUrl}/v1/user/event/register`, {
                     method: 'POST',
                     body: JSON.stringify(register),
                     headers: {

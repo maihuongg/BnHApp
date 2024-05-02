@@ -13,6 +13,7 @@ import { Entypo } from "@expo/vector-icons";
 import moment from "moment";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import baseUrl from '../utils/constant';
 import {
     userprofileStart,
     userprofileSuccess,
@@ -41,7 +42,7 @@ const RewardsScreen = () => {
             dispatch(userprofileStart());
 
             try {
-                const response1 = await fetch("http://192.168.251.136:8000/v1/user/profile/" + userId, {
+                const response1 = await fetch(`${baseUrl}/v1/user/profile/` + userId, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -113,17 +114,17 @@ const RewardsScreen = () => {
                     <View className="flex-row bg-gray-200 p-2 border-b border-gray-300">
                         <Text className="w-1/4 text-center">2
                         <MaterialCommunityIcons name="medal" size={14} color="rgb(8, 145, 178)" /></Text>
-                        <Text className="w-3/4 text-center">ssss</Text>
+                        <Text className="w-3/4 text-center">100.000VNĐ</Text>
                     </View>
                     <View className="flex-row bg-gray-200 p-2 border-b border-gray-300">
                         <Text className="w-1/4 text-center">3
                         <MaterialCommunityIcons name="medal" size={14} color="rgb(8, 145, 178)" /></Text>
-                        <Text className="w-3/4 text-center">ssss</Text>
+                        <Text className="w-3/4 text-center">150.000VNĐ</Text>
                     </View>
                     <View className="flex-row bg-gray-200 p-2 border-b border-gray-300">
                         <Text className="w-1/4 text-center">4
                         <MaterialCommunityIcons name="medal" size={14} color="rgb(8, 145, 178)" /></Text>
-                        <Text className="w-3/4 text-center">ssss</Text>
+                        <Text className="w-3/4 text-center">200.000VNĐ</Text>
                     </View>
                 </View>
             </View>

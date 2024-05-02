@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import TopBar from './components/Topbar';
+import baseUrl from '../utils/constant';
 const InformationScreen = () => {
     // const user = useSelector((state) => state.auth.login.currentUser);
     // const userId = user?._id;

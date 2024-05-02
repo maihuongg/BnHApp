@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
 import isEmpty from "validator/lib/isEmpty";
+import baseUrl from '../utils/constant';
 const ResetPassword = ({ route }) => {
 
     const { cccd } = route.params;
@@ -22,7 +23,7 @@ const ResetPassword = ({ route }) => {
             Alert.alert('Lỗi', 'Vui lòng điền vào các mục còn trống');
         } else {
             try {
-                const response = await fetch('http://192.168.251.136:8000/v1/user/reset-password', {
+                const response = await fetch(`${baseUrl}/v1/user/reset-password`, {
                     method: 'PUT',
                     body: JSON.stringify(requestForgot),
                     headers: {

@@ -7,6 +7,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
 import TopBar from './components/Topbar';
+import baseUrl from '../utils/constant';
 import {
     eventProfileStart,
     eventProfileSuccess,
@@ -39,7 +40,7 @@ const Sukien = () => {
             console.log("fuuuf");
             try {
                 console.log("faaasf");
-                const response = await fetch("http://192.168.251.136:8000/v1/user/event", {
+                const response = await fetch(`${baseUrl}/v1/user/event`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
@@ -65,7 +66,7 @@ const Sukien = () => {
 
     const fetchDataSearcg = async (keyword) => {
         try {
-            const response2 = await fetch(`http://192.168.251.136:8000/v1/user/search/event?keyword=${keyword}`, {
+            const response2 = await fetch(`${baseUrl}/v1/user/search/event?keyword=${keyword}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -108,7 +109,7 @@ const Sukien = () => {
             console.log("fffff");
             dispatch(eventProfileStart());
             try {
-                const response1 = await fetch("http://192.168.251.136:8000/v1/user/getevent/" + eventId, {
+                const response1 = await fetch(`${baseUrl}/v1/user/getevent/` + eventId, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -127,7 +128,7 @@ const Sukien = () => {
 
             dispatch(hospitalStart());
             try {
-                const response2 = await fetch("http://192.168.251.136:8000/v1/user/gethospital/" + hospitalId, {
+                const response2 = await fetch(`${baseUrl}/v1/user/gethospital/` + hospitalId, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

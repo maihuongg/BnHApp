@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import { MaterialIcons } from '@expo/vector-icons';
+import baseUrl from '../utils/constant';
 import moment from "moment";
 import {
     userprofileStart,
@@ -32,7 +33,7 @@ const LichSuScreen = () => {
             dispatch(userprofileStart());
 
             try {
-                const response1 = await fetch("http://192.168.251.136:8000/v1/user/profile/" + userId, {
+                const response1 = await fetch(`${baseUrl}/v1/user/profile/`+ userId, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
