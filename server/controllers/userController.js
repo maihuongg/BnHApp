@@ -55,7 +55,7 @@ const userController = {
             const accountId = req.params.account_id;
             console.log('accountId', accountId);
             const base64Image = req.body.images;
-            console.log('img1',base64Image);
+            console.log('img1', base64Image);
 
             const result = await cloudinary.v2.uploader.upload(req.body.images, {
                 folder: 'profile',
@@ -97,7 +97,7 @@ const userController = {
                 //console.log('resee ur',resetPasswordURL)
                 const emailResponse = await sendMail(user, code);
                 console.log('Email response:', emailResponse);
-    
+
                 return res.status(200).json({
                     code,
                     message: 'Mã đã được gửi đến email.'
@@ -106,14 +106,14 @@ const userController = {
             }
             else return res.status(500).json({ message: " Không tìm thấy thông tin nào phù hợp" });
 
-       
+
         } catch (error) {
             console.error('Error sending email:', error.message);
             console.error('Stack trace:', error.stack);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
-        
-        
+
+
     },
 
 
@@ -257,6 +257,42 @@ const userController = {
             return res.status(500).json(error);
         }
     },
+
+    checkRegistrationDate: async (req, res) => {
+
+        try {
+            const { userId, date } = req.body;
+
+            // Tìm userProfile
+            const userProfile = await UserProfile.findById(userId);
+
+            if (!userProfile) {
+                return res.status(404).json({ success: false, message: "Không tìm thấy userProfile" });
+            }
+
+            const registrationDate = new Date(date); // Ngày cần kiểm tra
+
+            // Kiểm tra mỗi sự kiện trong history của userProfile
+            for (const event of userProfile.history) {
+                const eventDate = new Date(event.date);
+
+                // Tính số ngày chênh lệch giữa ngày đăng ký và ngày hiện tại
+                const diffDays = Math.floor((registrationDate - eventDate) / (1000 * 60 * 60 * 24));
+
+                // Nếu ngày chênh lệch nhỏ hơn 90 ngày, trả về 0
+                if (diffDays < 90) {
+                    return res.status(200).json({ result: 0 });
+                }
+            }
+
+            // Nếu không có sự kiện nào thỏa mãn điều kiện, trả về 1
+            return res.status(200).json({ result: 1 });
+        } catch (error) {
+            console.error("Lỗi khi kiểm tra ngày đăng ký:", error);
+            return res.status(500).json({ message: "Đã xảy ra lỗi khi kiểm tra ngày đăng ký" });
+        }
+    },
+
     updateDateRegister: async (req, res) => {
         try {
             const { eventId, userId, date } = req.body;
@@ -337,6 +373,26 @@ const userController = {
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: "Lỗi server" });
+        }
+    },
+    updateReward: async (req, res) => {
+        try {
+            const accountId = req.params.account_id;
+
+            const userProfile = await UserProfile.findOneAndUpdate(
+                { account_id: accountId },
+                { $set: { reward: 0 } },
+                { new: true }
+            );
+
+            if (!userProfile) {
+                return res.status(404).json({ message: 'User profile not found' });
+            }
+
+            return res.status(200).json(userProfile);
+        } catch (error) {
+
+            return res.status(500).json({ error });
         }
     },
 
@@ -492,12 +548,12 @@ const sendMail = async (user, code) => {
                         To: [
                             {
                                 Email: user.email
-                               
+
                             }
                         ],
                         Subject: "[BloodnHeart] Thay đổi mật khẩu ",
-                        HTMLPart: 
-                        `
+                        HTMLPart:
+                            `
                         <p>Chào quý đối tác,</p>
 
                         <p>Cảm ơn bạn đã liên hệ với chúng tôi.</p>

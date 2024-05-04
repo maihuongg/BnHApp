@@ -72,10 +72,10 @@ const DetailEventScreen = () => {
 
         }
         handleDetailEvent();
-    }, [dispatch ]);
+    }, [dispatch]);
 
-  
-    
+
+
 
     const displayText = currentDate < new Date(eventDetail?.date_start) ? "Sắp diễn ra" : "Đang diễn ra";
 
@@ -140,9 +140,36 @@ const DetailEventScreen = () => {
     const minDate = new Date(datemin); // Ngày hiện tại
     const maxDate = new Date(datemax); // 
 
-    const handleContinute = () => {
-        setModalVisible(false);
-        setConfirmModal(true);
+    const handleContinute = async () => {
+        const checkdate = {
+            userId: userProfile._id,
+            date: date,
+        };
+        try {
+            const response = await fetch("http://192.168.251.136:8000/v1/user/event/checkdate", {
+                method: 'POST',
+                body: JSON.stringify(checkdate),
+                headers: {
+                    'Content-Type': 'application/json',
+                    token: `Bearer ${accessToken}`
+                }
+            });
+            if (!response.ok) {
+                Alert.alert('Thất bại');
+            } else {
+                const data = await response.json();
+                const result = data.result;
+                if (result === 0) {
+                    Alert.alert('Thông báo!', 'Bạn không thể đăng ký vì chưa đủ tối thiểu 90 ngày so với ngày hiến máu gần nhất.')
+                } else {
+                    setModalVisible(false);
+                    setConfirmModal(true);
+                }
+            }
+        } catch (error) {
+            Alert.alert('Lỗi', 'Đã xảy ra lỗi không mong muốn.');
+        }
+
     }
 
     const handleGoBackHome = () => {
@@ -229,8 +256,12 @@ const DetailEventScreen = () => {
 
                                 <TouchableOpacity onPress={handleContinute}>
                                     <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
-
                                         <Text className="text-white font-bold text-[16px]">Tiếp tục</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => { setModalVisible(false) }}>
+                                    <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
+                                        <Text className="text-white font-bold text-[16px]">Hủy</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -295,8 +326,12 @@ const DetailEventScreen = () => {
                                     </View>
                                     <TouchableOpacity onPress={() => setReconfirmModal(true)}>
                                         <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
-
                                             <Text className="text-white font-bold text-[16px]">Xác nhận</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => { setConfirmModal(false) }}>
+                                        <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
+                                            <Text className="text-white font-bold text-[16px]">Hủy</Text>
                                         </View>
                                     </TouchableOpacity>
                                     <Modal

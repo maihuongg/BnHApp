@@ -26,6 +26,7 @@ import LichSuScreen from './src/screens/LichSuScreen';
 import Sukien from './src/screens/Sukien';
 import HospitalScreen from './src/screens/HospitalScreen'
 import RewardsScreen from './src/screens/RewardsScreen';
+import ThongKeScreen from './src/screens/ThongKeScreens';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 import * as Device from 'expo-device';
@@ -35,13 +36,14 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Test" screenOptions={{ headerShown: false }} headerMode="none">
 
-        {/* <Stack.Screen name="Auth" component={AuthStack} />
+        <Stack.Screen name="Auth" component={AuthStack} />
         <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} />
         <Stack.Screen name="Event" component={EventTab} /> 
         <Stack.Screen name="Hospital" component={HospitalTab} /> 
-         */}
         <Stack.Screen name="InformationScreen" component={InformationTab} />
-        <Stack.Screen name="ThongKe" component={ThongKeScreen} />
+         
+        
+        {/* <Stack.Screen name="ThongKe" component={ThongKeScreen} /> */}
 
         {/* <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="LichHen" component={LichHenScreen} /> */}
@@ -201,6 +203,7 @@ const AuthStack = () => {
       <Stack.Screen name="LichHen" component={LichHenScreen} />
       <Stack.Screen name="LichSu" component={LichSuScreen} />
       <Stack.Screen name="Reward" component={RewardsScreen} />
+      <Stack.Screen name="ThongKe" component={ThongKeScreen} />
       {/* <Stack.Screen name="Sukien" component={Sukien}/> */}
     </Stack.Navigator>
   );

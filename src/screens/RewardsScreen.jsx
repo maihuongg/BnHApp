@@ -31,12 +31,21 @@ const RewardsScreen = () => {
     };
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const [modal, setModal] = useState(false);
 
     const handleBack = () => {
         navigation.navigate('InformationScreen');
     }
 
     useEffect(() => {
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentDay = currentDate.getDate();
+        if (currentMonth === 0 && currentDay === 1) { 
+            setModal(true);
+        } else {
+            setModal(false);
+        }
         const handleProfile = async () => {
             dispatch(userprofileStart());
 
@@ -61,8 +70,58 @@ const RewardsScreen = () => {
         }
         handleProfile();
     }, [dispatch]);
+
+    const showModal = modal;
+
+    const handleCloseModal = async () => {
+        dispatch(userprofileStart());
+
+        try {
+            const response1 = await fetch("http://192.168.251.136:8000/v1/user/profilereward/" + userId, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    token: `Bearer ${accessToken}`
+                }
+            });
+            if (!response1.ok) {
+                dispatch(userprofileFailed());
+            } else {
+                const data1 = await response1.json();
+                dispatch(userprofileSuccess(data1));
+                console.log("bbb");
+                setModal(false);
+            }
+        } catch (error) {
+            dispatch(userprofileFailed());
+        }
+    }
     return (
         <View className="flex-1">
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showModal}
+                onRequestClose={() => {
+                    setModalVisible(!showModal);
+                }}
+            >
+                <View className="flex-1 bg-rnb justify-center items-center">
+                    <View className="h-[20%] w-[90%]">
+
+                        <View style={{ flex: 1, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center', borderRadius: 15 }}>
+                            <Text className="text-blue font-bold text-[20px]">Thông báo</Text>
+                            <Text className="text-black font-bold text-[16px]">Điểm thưởng đã được làm mới theo chu kỳ năm!</Text>
+                            <TouchableOpacity onPress={handleCloseModal}>
+                                <View className="flex-row bg-blue rounded-md mx-24 p-2 mt-3 items-center justify-center">
+                                    <Text className="text-white font-bold text-sx">OK</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+
+            </Modal>
             <View className="flex-row h-32 bg-blue">
                 <TouchableOpacity onPress={handleBack}>
                     <View className="my-10 ml-5">
@@ -100,6 +159,11 @@ const RewardsScreen = () => {
                 <Text className="font-normal text-[14px] my-1">
                     + Quà tặng sẽ được tặng khi đến cơ sở hiến máu.
                 </Text>
+                <Text className="font-normal text-[14px] my-1">
+                    + Lưu ý đây là quà tặng khi tích lũy điểm thưởng trên hệ thống nên sẽ được tách biệt
+                    với các quà tặng khác khi đi hiến máu tại các cơ sở bệnh viện khác nhau,
+                    người dùng tránh nhầm lẫn và chú ý để nhận đầy đủ các phần quà khi đi hiến máu.
+                </Text>
             </View>
             <View className=" mx-4 my-2">
                 <Text className="font-bold text-blue text-[16px] mr-4"> * Bảng quy đổi điểm thưởng:</Text>
@@ -112,18 +176,18 @@ const RewardsScreen = () => {
                     </View>
                     <View className="flex-row bg-gray-200 p-2 border-b border-gray-300">
                         <Text className="w-1/4 text-center">2
-                        <MaterialCommunityIcons name="medal" size={14} color="rgb(8, 145, 178)" /></Text>
-                        <Text className="w-3/4 text-center">ssss</Text>
+                            <MaterialCommunityIcons name="medal" size={14} color="rgb(8, 145, 178)" /></Text>
+                        <Text className="w-3/4 text-center">100000VNĐ</Text>
                     </View>
                     <View className="flex-row bg-gray-200 p-2 border-b border-gray-300">
                         <Text className="w-1/4 text-center">3
-                        <MaterialCommunityIcons name="medal" size={14} color="rgb(8, 145, 178)" /></Text>
-                        <Text className="w-3/4 text-center">ssss</Text>
+                            <MaterialCommunityIcons name="medal" size={14} color="rgb(8, 145, 178)" /></Text>
+                        <Text className="w-3/4 text-center">200000VNĐ</Text>
                     </View>
                     <View className="flex-row bg-gray-200 p-2 border-b border-gray-300">
                         <Text className="w-1/4 text-center">4
-                        <MaterialCommunityIcons name="medal" size={14} color="rgb(8, 145, 178)" /></Text>
-                        <Text className="w-3/4 text-center">ssss</Text>
+                            <MaterialCommunityIcons name="medal" size={14} color="rgb(8, 145, 178)" /></Text>
+                        <Text className="w-3/4 text-center">300000VNĐ</Text>
                     </View>
                 </View>
             </View>

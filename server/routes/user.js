@@ -6,12 +6,14 @@ const userController = require('../controllers/userController');
 const authMiddleware = require('../middlewares/auth')
 router.get('/profile/:account_id',authMiddleware.isUser, userController.getUserById);
 router.put('/profile/:account_id',authMiddleware.isUser, userController.updateProfile);
+router.put('/profilereward/:account_id',authMiddleware.isUser, userController.updateReward);
 router.put('/profileimage/:account_id',authMiddleware.isUser, userController.updateProfileImage);
 router.post('/forgot-password',userController.forgotPassword);
 router.post('/valid-reset-token',authMiddleware.checkValidResetPasswordToken);
 router.put('/reset-password', accountController.resetPassword);
 router.get('/event', userController.getAllEventByUser);
 router.post('/event/register', authMiddleware.isUser, userController.registerEvent);
+router.post('/event/checkdate', authMiddleware.isUser, userController.checkRegistrationDate);
 router.get('/getevent/:id', authMiddleware.isUser, hospitalController.getEventById);
 router.get('/gethospital/:id', authMiddleware.isUser, userController.getHospitalById);
 router.get('/getfour', hospitalController.getFourHospital);

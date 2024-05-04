@@ -14,6 +14,8 @@ import moment from 'moment';
 import { LineChart } from 'react-native-chart-kit';
 const ThongKeScreen = () => {
 
+    const navigation = useNavigation();
+
     const handleBack = () => {
         navigation.navigate('InformationScreen');
     }
@@ -40,7 +42,7 @@ const ThongKeScreen = () => {
         // Fetch data from your API endpoint
         const fetchAccountbyDate = async () => {
             try {
-                const response = await fetch('http://192.168.1.6:8000/v1/admin/statistic/account-register');
+                const response = await fetch('http://192.168.251.136:8000/v1/admin/statistic/account-register');
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch account statistics by date');
@@ -170,7 +172,7 @@ const ThongKeScreen = () => {
 }
 async function totalUser() {
     try {
-        const response = await fetch("http://192.168.1.6:8000/v1/admin/users", {
+        const response = await fetch("http://192.168.251.136:8000/v1/admin/users", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

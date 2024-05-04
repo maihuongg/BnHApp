@@ -21,7 +21,7 @@ const Sukien2 = () => {
     const handleEvent = async () => {
         try {
             setLoading(true); // Bắt đầu tải dữ liệu, đặt trạng thái loading là true
-            const response = await fetch(`http://192.168.1.3:8000/v1/user/event?page=${page}`, {
+            const response = await fetch(`http://192.168.251.136:8000/v1/user/event?page=${page}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
