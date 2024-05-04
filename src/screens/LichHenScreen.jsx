@@ -1,4 +1,5 @@
 import { View, Text, TextInput, ScrollView, Modal, Image, TouchableOpacity } from 'react-native';
+import baseUrl from '../utils/constant';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
@@ -54,7 +55,7 @@ const LichHenScreen = () => {
             dispatch(userprofileStart());
             
             try {
-                const response1 = await fetch("http://192.168.251.136:8000/v1/user/profile/" + userId, {
+                const response1 = await fetch(`${baseUrl}/v1/user/profile/` + userId, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -78,7 +79,7 @@ const LichHenScreen = () => {
     
     const handleShow = async (eventid) => {
         try {
-            const response1 = await fetch("http://192.168.251.136:8000/v1/user/getevent/" + eventid, {
+            const response1 = await fetch(`${baseUrl}/v1/user/getevent/` + eventid, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,7 +87,7 @@ const LichHenScreen = () => {
                 }
             });
             if (!response1.ok) {
-                console.log("fail");
+                console.log("fail1");
             } else {
                 const data = await response1.json();
                 setEventId(data._id);
@@ -117,7 +118,7 @@ const LichHenScreen = () => {
             date: date,
         }
         try {
-            const response1 = await fetch("http://192.168.251.136:8000/v1/user/event/updateRegisterDate", {
+            const response1 = await fetch(`${baseUrl}/v1/user/event/updateRegisterDate`, {
                 method: 'PUT',
                 body: JSON.stringify(update),
                 headers: {
@@ -146,7 +147,7 @@ const LichHenScreen = () => {
             userId: userPro._id,
         }
         try {
-            const response1 = await fetch("http://192.168.251.136:8000/v1/user/event/deleteRegister", {
+            const response1 = await fetch(`${baseUrl}/v1/user/event/deleteRegister`, {
                 method: 'DELETE',
                 body: JSON.stringify(deleteRegister),
                 headers: {

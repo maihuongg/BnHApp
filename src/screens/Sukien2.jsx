@@ -1,65 +1,65 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, TextInput, SafeAreaView, Touchable, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TextInput, SafeAreaView, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
-import TopBar from './components/Topbar';
+
 const Sukien2 = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(1); // Đếm trang
-    const [hasMore, setHasMore] = useState(true); // Xác định xem còn dữ liệu để tải nữa hay không
-    const [allDataLoaded, setAllDataLoaded] = useState(false); // Xác định khi tất cả dữ liệu đã được tải
-
-    useEffect(() => {
-        handleEvent(); // Khi component được tạo lần đầu, gọi handleEvent để tải dữ liệu
-    }, []); 
-
-    const handleEvent = async () => {
-        try {
-            setLoading(true); // Bắt đầu tải dữ liệu, đặt trạng thái loading là true
-            const response = await fetch(`http://192.168.251.136:8000/v1/user/event?page=${page}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [allDataLoaded, setAllDataLoaded] = useState(false);
     
-            if (response.ok) {
-                const newData = await response.json();
-                if (newData.allEvent.length === 0) {
-                    if (page === 1) {
-                        setAllDataLoaded(true); // Nếu trang hiện tại là trang đầu tiên và không có dữ liệu mới, đặt allDataLoaded là true
-                    } else {
-                        setHasMore(false); // Nếu trang hiện tại không phải là trang đầu tiên và không có dữ liệu mới, không còn dữ liệu để tải nữa
-                    }
-                } else {
-                    setData(prevData => [...prevData, ...newData.allEvent]); // Kết hợp dữ liệu mới với dữ liệu đã có
-                    setPage(prevPage => prevPage + 1); // Tăng số trang lên khi có dữ liệu mới
-                }
-            } else {
-                console.log("Error fetching data");
+    useEffect(() => {
+      handleEvent();
+    }, []);
+    
+    const handleEvent = async () => {
+      try {
+        if (!loading && hasMore) {
+          setLoading(true);
+          const response = await fetch(`http://192.168.251.247:8000/v1/user/event?page=${page}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
             }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        } finally {
-            setLoading(false); // Kết thúc quá trình tải dữ liệu, đặt trạng thái loading là false
+          });
+      
+          if (response.ok) {
+            const newData = await response.json();
+            if (newData.allEvent.length === 0) {
+              setAllDataLoaded(true);
+              setHasMore(false);
+              setLoading(false); // Dừng loading khi dữ liệu hết
+            } else {
+              setData(prevData => [...prevData, ...newData.allEvent]);
+              setPage(prevPage => prevPage + 1);
+            }
+          } else {
+            console.log("Error fetching data");
+          }
         }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     
     const handleScroll = (event) => {
-        const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
-        const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
-        if (isCloseToBottom && !loading && hasMore) {
-            handleEvent(); // Gọi handleEvent khi cuộn đến cuối trang và còn dữ liệu để tải
-        }
+      const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+      const isScrolledToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height;
+      if (isScrolledToBottom && !loading && hasMore) {
+        handleEvent();
+      }
     };
     
     return (
-        <SafeAreaView className=" flex-1 bg-white pt-6">
+        <SafeAreaView className="flex-1 bg-white pt-6">
             <View className="bg-white flex-row p-1 items-center ml-4">
                 <Image
                     source={require('../../assets/logo1.png')}

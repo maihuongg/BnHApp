@@ -2,6 +2,7 @@ import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
+import baseUrl from '../utils/constant';
 import isEmpty from "validator/lib/isEmpty";
 const ForgotPassword = () => {
 
@@ -30,7 +31,7 @@ const ForgotPassword = () => {
             Alert.alert('Lỗi', 'Vui lòng điền vào các mục còn trống');
         } else {
             try {
-                const response = await fetch('http://192.168.251.136:8000/v1/user/forgot-password', {
+                const response = await fetch(`${baseUrl}/v1/user/forgot-password`, {
                     method: 'POST',
                     body: JSON.stringify(requestForgot),
                     headers: {

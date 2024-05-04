@@ -9,7 +9,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
 import moment from 'moment';
-
+import baseUrl from '../utils/constant';
 
 import { LineChart } from 'react-native-chart-kit';
 const ThongKeScreen = () => {
@@ -42,7 +42,7 @@ const ThongKeScreen = () => {
         // Fetch data from your API endpoint
         const fetchAccountbyDate = async () => {
             try {
-                const response = await fetch('http://192.168.251.136:8000/v1/admin/statistic/account-register');
+                const response = await fetch(`${baseUrl}/v1/admin/statistic/account-register`);
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch account statistics by date');
@@ -172,7 +172,7 @@ const ThongKeScreen = () => {
 }
 async function totalUser() {
     try {
-        const response = await fetch("http://192.168.251.136:8000/v1/admin/users", {
+        const response = await fetch(`${baseUrl}/v1/admin/users`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -18,6 +18,7 @@ import {
     userprofileSuccess,
     userprofileFailed,
 } from "../redux/userSlice";
+import baseUrl from '../utils/constant';
 const ProfileScreen = () => {
 
 
@@ -79,7 +80,7 @@ const ProfileScreen = () => {
         const handleProfile = async () => {
             dispatch(userprofileStart());
             try {
-                const response1 = await fetch("http://192.168.251.136:8000/v1/user/profile/" + userId, {
+                const response1 = await fetch(`${baseUrl}/v1/user/profile/` + userId, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ const ProfileScreen = () => {
         };
         dispatch(userprofileStart());
         try {
-            const response = await fetch("http://192.168.251.136:8000/v1/user/profile/" + userId, {
+            const response = await fetch(`${baseUrl}/v1/user/profile/` + userId, {
                 method: 'PUT',
                 body: JSON.stringify(updateUser),
                 headers: {
@@ -185,7 +186,7 @@ const ProfileScreen = () => {
         dispatch(userprofileStart());
 
         try {
-            const response = await fetch("http://192.168.251.136:8000/v1/user/profileimage/" + userId, {
+            const response = await fetch(`${baseUrl}/v1/user/profileimage/` + userId, {
                 method: 'PUT',
                 body: formData,
                 headers: {

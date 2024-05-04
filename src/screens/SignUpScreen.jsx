@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Alert } from 'react-native';
 import isEmpty from "validator/lib/isEmpty";
+import baseUrl from '../utils/constant';
 import axios from 'axios';
 const SignUpScreen = () => {
 
@@ -34,7 +35,7 @@ const SignUpScreen = () => {
         } else {
             if (repw == newUser.password) {
                 try {
-                    const response = await fetch('http://192.168.251.136:8000/v1/auth/register', {
+                    const response = await fetch(`${baseUrl}/v1/auth/register`, {
                         method: 'POST',
                         body: JSON.stringify(newUser),
                         headers: {
