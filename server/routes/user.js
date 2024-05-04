@@ -21,6 +21,7 @@ router.get('/hospital/:id', userController.getHospitalById);
 router.put('/event/updateRegisterDate', authMiddleware.isUser, userController.updateDateRegister);
 router.post('/event/filter', userController.filterEvent);
 router.get('/allhospital', userController.getAllHospital);
+router.get('/twohospital', userController.getTwoHospital);
 router.get('/search/event', userController.searchEvent);
 router.get('/bestevent', userController.bestEvent);
 router.get('/bestfiveevent', userController.bestFiveEvent);

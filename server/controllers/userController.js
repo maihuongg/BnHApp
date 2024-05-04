@@ -448,6 +448,19 @@ const userController = {
             return res.status(500).json(error);
         }
     },
+    getTwoHospital: async (req, res) => {
+        try {
+            const allHospital = await HospitalProfile.find();
+    
+            // Chỉ lấy hai bệnh viện đầu tiên
+            const firstTwoHospitals = allHospital.slice(0, 2);
+    
+            return res.status(200).json(firstTwoHospitals);
+        } catch (error) {
+            return res.status(500).json(error);
+        }
+    },
+    
     bestFiveEvent: async (req, res) => {
         try {
             const event = await Event.find().sort({ 'listusers.count': -1 }).limit(5);

@@ -30,6 +30,7 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [dataBestEvent, setDataBestEvent] = useState([]);
+  const [dataTwoHospital, setDataTwoHospital] = useState([]);
   const [count, setCount] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [eventSearch, setEventSearch] = useState(null);
@@ -41,8 +42,6 @@ const HomeScreen = () => {
     const currentIndex = Math.floor(contentOffsetX / viewSize);
     setScrollIndex(currentIndex);
   };
-
-  console.log("hgjh", dataBestEvent);
 
   const data = [
     {
@@ -111,7 +110,29 @@ const HomeScreen = () => {
       }
     }
     handleBestEvent();
-  }, [setCount, setDataBestEvent]);
+    const handleTwoHospital = async () => {
+      try {
+        const response2 = await fetch(`${baseUrl}/v1/user/twohospital`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response2.ok) {
+          console.log("Get Two Hospital Fail.")
+        }
+        else {
+          const twoHospital = await response2.json();
+          console.log("b", twoHospital);
+          setDataTwoHospital(twoHospital);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    handleTwoHospital();
+  }, [setCount, setDataBestEvent, setDataTwoHospital]);
 
   const handleToDetailEvent = async (eventId, hospitalId) => {
     if (user) {
@@ -374,48 +395,29 @@ const HomeScreen = () => {
           <View className="flex-auto bg-silver">
             <Text className="text-xl font-bold text-blue px-4 my-2">Một số bệnh viện hợp tác</Text>
             {/* BV HỢP TÁC */}
-            <View className="bg-white">
-              <View className="bg-white mx-4 rounded-lg shadow-md my-3">
-                <TouchableOpacity className="bg-gray mx-auto rounded-full w-52 h-52 mt-2 justify-center items-center ">
-                  <Image
-                    source={require('../../assets/2.png')}
-                    className="rounded-full w-48 h-48">
-                  </Image>
-                </TouchableOpacity>
-                <View className="bg-gray justify-center mx-4 items-center -mt-10 -z-10 rounded-lg mb-3">
-                  <Text className="mt-8 py-1 text-black font-bold text-lg">Bệnh viện Thủ Đức</Text>
-                  <View className="flex-row mx-4">
-                    <Text className="font-bold">Địa chỉ :
-                      <Text className="text-black font-normal"> 64 Lê Văn Chí, Phường Linh Trung, Thủ Đức, TP. Hồ Chí Minh</Text></Text>
-                  </View>
-                  <View className="flex-row mx-auto mb-2 ">
-                    <Text className="font-bold">Hotline:</Text>
-                    <Text className="text-black font-normal">19001175</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View className="bg-white">
-              <View className="bg-white mx-4 rounded-lg shadow-md my-3">
-                <TouchableOpacity className="bg-gray mx-auto rounded-full w-52 h-52 mt-2 justify-center items-center ">
-                  <Image
-                    source={require('../../assets/2.png')}
-                    className="rounded-full w-48 h-48">
-                  </Image>
-                </TouchableOpacity>
-                <View className="bg-gray justify-center mx-4 items-center -mt-10 -z-10 rounded-lg mb-3">
-                  <Text className="mt-8 py-1 text-black font-bold text-lg">Bệnh viện Quân Y</Text>
-                  <View className="flex-row mx-4">
-                    <Text className="font-bold">Địa chỉ :
-                      <Text className="text-black font-normal"> 786 Nguyễn Kiệm, P.3, Q.Gò Vấp, TP. Hồ Chí Minh</Text></Text>
-                  </View>
-                  <View className="flex-row mx-auto mb-2 ">
-                    <Text className="font-bold">Hotline:</Text>
-                    <Text className="text-black font-normal">19001175</Text>
+            {dataTwoHospital.map((hospital) => (
+              <View className="bg-white">
+                <View className="bg-white mx-4 rounded-lg shadow-md my-3">
+                  <TouchableOpacity className="bg-gray mx-auto rounded-full w-52 h-52 mt-2 justify-center items-center ">
+                    <Image
+                      source={require('../../assets/2.png')}
+                      className="rounded-full w-48 h-48">
+                    </Image>
+                  </TouchableOpacity>
+                  <View className="bg-gray justify-center mx-4 items-center -mt-10 -z-10 rounded-lg mb-3">
+                    <Text className="mt-8 py-1 text-black font-bold text-lg">{hospital.hospitalName}</Text>
+                    <View className="flex-row mx-4">
+                      <Text className="font-bold">Địa chỉ :
+                        <Text className="text-black font-normal">{hospital.address}</Text> </Text>
+                    </View>
+                    <View className="flex-row mx-auto mb-2 ">
+                      <Text className="font-bold">Hotline:</Text>
+                      <Text className="text-black font-normal">{hospital.phone}</Text>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
+            ))}
           </View>
         </ScrollView >
       ) : (
@@ -510,55 +512,32 @@ const HomeScreen = () => {
           <View className="flex-auto bg-silver">
             <Text className="text-xl font-bold text-blue px-4 my-2">Một số bệnh viện hợp tác</Text>
             {/* BV HỢP TÁC */}
-            <View className="bg-white">
-              <View className="bg-white mx-4 rounded-lg shadow-md my-3">
-                <TouchableOpacity className="bg-gray mx-auto rounded-full w-52 h-52 mt-2 justify-center items-center ">
-                  <Image
-                    source={require('../../assets/2.png')}
-                    className="rounded-full w-48 h-48">
-                  </Image>
-                </TouchableOpacity>
-                <View className="bg-gray justify-center mx-4 items-center -mt-10 -z-10 rounded-lg mb-3">
-                  <Text className="mt-8 py-1 text-black font-bold text-lg">Bệnh viện Thủ Đức</Text>
-                  <View className="flex-row mx-4">
-                    <Text className="font-bold">Địa chỉ :
-                      <Text className="text-black font-normal"> 64 Lê Văn Chí, Phường Linh Trung, Thủ Đức, TP. Hồ Chí Minh</Text> </Text>
-                  </View>
-                  <View className="flex-row mx-auto mb-2 ">
-                    <Text className="font-bold">Hotline:</Text>
-                    <Text className="text-black font-normal">19001175</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View className="bg-white">
-              <View className="bg-white mx-4 rounded-lg shadow-md my-3">
-                <TouchableOpacity className="bg-gray mx-auto rounded-full w-52 h-52 mt-2 justify-center items-center ">
-                  <Image
-                    source={require('../../assets/2.png')}
-                    className="rounded-full w-48 h-48">
-                  </Image>
-                </TouchableOpacity>
-                <View className="bg-gray justify-center mx-4 items-center -mt-10 -z-10 rounded-lg mb-3">
-                  <Text className="mt-8 py-1 text-black font-bold text-lg">Bệnh viện Quân Y</Text>
-                  <View className="flex-row mx-4">
-                    <Text className="font-bold">Địa chỉ :
-                      <Text className="text-black font-normal"> 64 Lê Văn Chí, Phường Linh Trung, Thủ Đức, TP. Hồ Chí Minh</Text></Text>
-                  </View>
-                  <View className="flex-row mx-auto mb-2 ">
-                    <Text className="font-bold">Hotline:</Text>
-                    <Text className="text-black font-normal">19001175</Text>
+            {dataTwoHospital.map((hospital) => (
+              <View className="bg-white">
+                <View className="bg-white mx-4 rounded-lg shadow-md my-3">
+                  <TouchableOpacity className="bg-gray mx-auto rounded-full w-52 h-52 mt-2 justify-center items-center ">
+                    <Image
+                      source={require('../../assets/2.png')}
+                      className="rounded-full w-48 h-48">
+                    </Image>
+                  </TouchableOpacity>
+                  <View className="bg-gray justify-center mx-4 items-center -mt-10 -z-10 rounded-lg mb-3">
+                    <Text className="mt-8 py-1 text-black font-bold text-lg">{hospital.hospitalName}</Text>
+                    <View className="flex-row mx-4">
+                      <Text className="font-bold">Địa chỉ :
+                        <Text className="text-black font-normal">{hospital.address}</Text> </Text>
+                    </View>
+                    <View className="flex-row mx-auto mb-2 ">
+                      <Text className="font-bold">Hotline:</Text>
+                      <Text className="text-black font-normal">{hospital.phone}</Text>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
+            ))}
           </View>
         </ScrollView >
       )}
-
-
-
-
     </SafeAreaView >
   );
 };
