@@ -263,6 +263,49 @@ const hospitalController = {
             console.error(error);
             return res.status(500).json({ message: "Lỗi server" });
         }
+    },
+    updateStatusRegister1: async (req, res) => {
+        try {
+            const { eventId, userId, status} = req.body;
+            // Tìm sự kiện có eventId và người dùng có userId trong danh sách
+            const event = await Event.findOne({
+                _id: eventId
+            });
+
+            if (!event) {
+                return res.status(404).json({ message: "Sự kiện hoặc người dùng không tồn tại" });
+            }
+
+            // Cập nhật ngày đăng ký của người dùng cho sự kiện
+            const userToUpdate = event.listusers.user.find(user => user.userid === userId);
+
+            userToUpdate.status_user = status;
+            // Lưu sự kiện đã cập nhật
+            await event.save();
+
+            // Tìm người dùng có userId và sự kiện có eventId trong lịch sử sự kiện
+            const userProfile = await UserProfile.findOne({
+                _id: userId
+            });
+
+            if (!userProfile) {
+                return res.status(404).json({ message: "Người dùng hoặc sự kiện không tồn tại trong lịch sử" });
+            }
+
+            // Cập nhật ngày đăng ký của sự kiện cho người dùng
+            const updateEvent = userProfile.history.find(user => user.id_event === eventId);
+            updateEvent.status_user = status;
+
+            // Lưu thông tin người dùng đã cập nhật
+            await userProfile.save();
+
+            console.log("afuserProfile", userProfile);
+
+            return res.status(200).json({ message: "Cập nhật thành công", event });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Lỗi server" });
+        }
     }
 }
 module.exports = hospitalController;
