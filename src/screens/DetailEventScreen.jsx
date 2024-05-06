@@ -176,6 +176,9 @@ const DetailEventScreen = () => {
     const handleGoBackHome = () => {
         navigation.navigate('Home', { screen: 'HomeScreen' });
     }
+    const handeOpenMap = () => {
+        navigation.navigate('MapViewScreen', { screen: 'MapViewScreen' });
+    }
     return (
         <View className="flex-1">
             <View className="w-full h-64 relative">
@@ -217,11 +220,19 @@ const DetailEventScreen = () => {
                     <Text className="text-black font-bold text-[16px] my-4 mx-2">Số lượng đã đăng ký: </Text>
                     <Text className="text-black font-normal text-[16px] my-4">{eventDetail?.listusers.count}/<Text className="text-black font-bold text-[16px]">{eventDetail?.amount}</Text></Text>
                 </View>
+                <View className="flex-row  mx-4 my-2 justify-center">
+
                 <TouchableOpacity onPress={handleShow}>
                     <View className="bg-blue mx-auto items-center justify-center rounded-md my-2">
                         <Text className="text-white font-bold p-3 mx-3 text-[16px]">ĐĂNG KÝ</Text>
                     </View>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={handeOpenMap}>
+                    <View className="bg-yellow mx-auto items-center justify-center rounded-md my-2">
+                        <Text className="text-white font-bold p-3 mx-3 text-[16px]">Xem đường đi</Text>
+                    </View>
+                </TouchableOpacity>
+                </View>
                 <Modal
                     animationType="slide"
                     transparent={true}
