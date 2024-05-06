@@ -13,6 +13,7 @@ import {
     allEventSuccess,
     allEventFailed,
 } from "../redux/userSlice";
+import { Ionicons } from '@expo/vector-icons';
 import {
     loginFailed,
     loginStart,
@@ -118,6 +119,10 @@ const LoginScreen = () => {
     const handleDangKy = () => {
         navigation.navigate('SignUpScreen');
     }
+    const [hidePassword, setHidePassword] = useState(true); // State to control password visibility
+    const toggleShowPassword = () => {
+        setHidePassword(!hidePassword);
+    }
     return (
         <View className="flex-1  bg-white" >
             <Image source={require('../../assets/logo.png')} style={{ width: 220, height: 200, alignSelf: 'center' }}
@@ -130,13 +135,21 @@ const LoginScreen = () => {
                 className="p-2 ml-4 mr-4 mt-2 border-2 border-black rounded-lg text-black"
                 placeholder="Số định danh cá nhân"
             />
-            <TextInput
-                value={password}
-                onChangeText={(text) => setPassword(text)}
-                className="p-2 ml-4 mr-4 mt-2 border-2 border-black rounded-lg text-black"
-                placeholder="Nhập mật khẩu"
-                secureTextEntry
-            />
+
+            <View className="flex-row items-center p-2 ml-4 mr-4 mt-2 border-2 border-black rounded-lg">
+
+                <TextInput
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
+                    className="w-full text-black"
+                    placeholder="Nhập mật khẩu"
+                    secureTextEntry={hidePassword}
+                />
+                <TouchableOpacity className="justify-center items-center -ml-8" onPress={toggleShowPassword} >
+                    {hidePassword ? <Ionicons name="eye-off" size={24} color="black" /> : <Ionicons name="eye" size={24} color="black" />}
+                </TouchableOpacity>
+            </View>
+
             <TouchableOpacity onPress={handleLogin}
                 style={{ alignItems: 'center', backgroundColor: 'blue', padding: 10, margin: 10, borderRadius: 6 }}
                 className="items-center bg-blue-500 p-4 m-4 rounded-md" >
@@ -150,7 +163,7 @@ const LoginScreen = () => {
                 <TouchableOpacity onPress={handleDangKy}>
                     <Text className="text-blue font-bold ml-1">Đăng ký ngay</Text>
                 </TouchableOpacity></View>
-        </View>
+        </View >
     );
 };
 
