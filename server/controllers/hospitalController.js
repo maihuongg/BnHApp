@@ -114,6 +114,61 @@ const hospitalController = {
             return res.status(500).json({ error: "Internal Server Error" });
         }
     },
+    updateProfile: async (req, res) => {
+        try {
+            const accountId = req.params.account_id;
+            const {hospitalName, leaderName, phone, email, address } = req.body;
+
+            const hospitalProfile = await HospitalProfile.findOneAndUpdate(
+                { account_id: accountId },
+                { $set: { hospitalName, leaderName, phone, email, address } },
+                { new: true }
+            );
+
+            if (!hospitalProfile) {
+                return res.status(404).json({ message: 'User profile not found' });
+            }
+
+            return res.status(200).json(hospitalProfile);
+        } catch (error) {
+
+            return res.status(500).json({ error });
+        }
+    },
+
+    updateProfileImage: async (req, res) => {
+        try {
+            const accountId = req.params.account_id;
+            console.log('accountId', accountId);
+            const base64Image = req.body.images;
+            console.log('img1', base64Image);
+
+            const result = await cloudinary.v2.uploader.upload(req.body.images, {
+                folder: 'profile',
+                width: 150,
+                crop: "scale"
+            })
+
+            console.log('url', result.secure_url);
+
+            const imageurl = result.secure_url;
+
+            const hospitalProfile = await HospitalProfile.findOneAndUpdate(
+                { account_id: accountId },
+                { $set: { images: imageurl } },
+                { new: true }
+            );
+
+            if (!hospitalProfile) {
+                return res.status(404).json({ message: 'User profile not found' });
+            }
+
+            return res.status(200).json(hospitalProfile);
+        } catch (error) {
+            return res.status(500).json({ error });
+        }
+    },
+
     updateEventImage: async (req, res) => {
         try {
             const id = req.params.id;
