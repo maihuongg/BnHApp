@@ -31,6 +31,8 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 import * as Device from 'expo-device';
 import { usePushNotifications } from './src/utils/pushNotification';
+import MapViewScreen from './src/screens/MapView';
+
 const AppNavigator = () => {
   return (
     <NavigationContainer>
@@ -38,11 +40,14 @@ const AppNavigator = () => {
       {/* <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
 
 
-        <Stack.Screen name="Auth" component={AuthStack} />
+        {/* <Stack.Screen name="Auth" component={AuthStack} /> */}
         <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} />
         <Stack.Screen name="Event" component={EventTab} /> 
+        <Stack.Screen name="DetailScreen" component={DetailEventScreen} /> 
         <Stack.Screen name="Hospital" component={HospitalTab} /> 
         <Stack.Screen name="InformationScreen" component={InformationTab} />
+        <Stack.Screen name="MapViewScreen" component={MapViewScreen} />
+
          
         
         {/* <Stack.Screen name="ThongKe" component={ThongKeScreen} /> */}

@@ -14,6 +14,7 @@ import { Provider } from 'react-redux';
 import { store, persistor } from "./src/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import InformationScreen from './src/screens/InformationScreen';
+import MapView from './src/screens/MapView';
 const Stack = createStackNavigator();
 // import Realm from 'realm';
 const AppNavigator = () => {
@@ -22,6 +23,7 @@ const AppNavigator = () => {
       <Stack.Navigator initialRouteName="Introduction" screenOptions={{ headerShown: false }} headerMode="none">
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="InformationScreen" component={InformationScreen} />
+        <Stack.Screen name="MapView" component={MapView} />
         {/* <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
