@@ -10,6 +10,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import TopBar from './components/Topbar';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
+import { SelectList } from 'react-native-dropdown-select-list'
 import {
     eventProfileStart,
     eventProfileSuccess,
@@ -32,6 +33,7 @@ const DetailEventScreen = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [confirmModal, setConfirmModal] = useState(false);
     const [reconfirmModal, setReconfirmModal] = useState(false);
+    const [amount_blood, setAmountblood] = useState(350);
     const [activeItem, setActiveItem] = useState('user');
     const handleItemClick = (item) => {
         setActiveItem(item);
@@ -76,7 +78,10 @@ const DetailEventScreen = () => {
     }, [dispatch]);
 
 
-
+    const amountblood = [
+        { key: '350 ml', value: 350 },
+        { key: '250 ml', value: 250 },
+    ];
 
     const displayText = currentDate < new Date(eventDetail?.date_start) ? "Sắp diễn ra" : "Đang diễn ra";
 
@@ -87,6 +92,7 @@ const DetailEventScreen = () => {
             userId: userProfile._id,
             bloodGroup: userProfile.bloodgroup,
             dateRegister: date,
+            amount_blood: amount_blood,
         };
         if (userProfile.fullName === null
             || userProfile.gender === null
@@ -94,7 +100,7 @@ const DetailEventScreen = () => {
             || userProfile.phone === null
             || userProfile.address === null
             || userProfile.bloodgroup === null) {
-            showNotificationErr("Cần cập nhập hồ sơ đầy đủ!");
+            Alert.alert("Cần cập nhập hồ sơ đầy đủ!");
         } else {
             try {
                 const response = await fetch(`${baseUrl}/v1/user/event/register`, {
@@ -147,7 +153,7 @@ const DetailEventScreen = () => {
             date: date,
         };
         try {
-            const response = await fetch("http://192.168.251.136:8000/v1/user/event/checkdate", {
+            const response = await fetch(`${baseUrl}/v1/user/event/checkdate`, {
                 method: 'POST',
                 body: JSON.stringify(checkdate),
                 headers: {
@@ -222,16 +228,16 @@ const DetailEventScreen = () => {
                 </View>
                 <View className="flex-row  mx-4 my-2 justify-center">
 
-                <TouchableOpacity onPress={handleShow}>
-                    <View className="bg-blue mx-auto items-center justify-center rounded-md my-2">
-                        <Text className="text-white font-bold p-3 mx-3 text-[16px]">ĐĂNG KÝ</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handeOpenMap}>
-                    <View className="bg-yellow mx-auto items-center justify-center rounded-md my-2">
-                        <Text className="text-white font-bold p-3 mx-3 text-[16px]">Xem đường đi</Text>
-                    </View>
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={handleShow}>
+                        <View className="bg-blue mx-auto items-center justify-center rounded-md my-2">
+                            <Text className="text-white font-bold p-3 mx-3 text-[16px]">ĐĂNG KÝ</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handeOpenMap}>
+                        <View className="bg-yellow mx-auto items-center justify-center rounded-md my-2">
+                            <Text className="text-white font-bold p-3 mx-3 text-[16px]">Xem đường đi</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
                 <Modal
                     animationType="slide"
@@ -244,7 +250,7 @@ const DetailEventScreen = () => {
                     <View className="flex-1 bg-rnb justify-center items-center">
                         <View className="h-[85%] w-[95%]">
                             <View className=" mx-2 bg-white p-4 rounded-md ">
-                                <Text className="text-xl font-bold text-blue mb-2">Chọn ngày hiến máu</Text>
+                                <Text className="text-xl font-bold text-blue mb-2">Chọn lượng máu và ngày hiến máu</Text>
                                 <View className="flex-row  bg-[#d7faf5] mx-4 my-2">
                                     <Text className="text-black font-bold text-[16px] my-4 mx-2">Ngày hiến máu: </Text>
                                     <Text className="text-black font-normal text-[16px] my-4">{moment(date).format('DD/MM/YYYY')}</Text>
@@ -264,6 +270,14 @@ const DetailEventScreen = () => {
                                             />
                                         )}
                                     </View>
+                                </View>
+                                <View className="ustify-center mx-auto">
+                                    <Text className="text-black text-[16px] font-bold my-2"> Lượng máu </Text>
+                                    <SelectList
+                                        setSelected={(val) => setAmountblood(val || amount_blood)}
+                                        data={amountblood}
+                                        save="value"
+                                    />
                                 </View>
 
                                 <TouchableOpacity onPress={handleContinute}>
@@ -332,6 +346,10 @@ const DetailEventScreen = () => {
                                     <View className="flex-row mx-2">
                                         <Text className="text-black font-bold text-[16px] my-4 mx-2">Ngày đăng ký hiến máu: </Text>
                                         <Text className="text-black font-normal text-[16px] my-4">{moment(date).format('DD/MM/YYYY')}</Text>
+                                    </View>
+                                    <View className="flex-row mx-2">
+                                        <Text className="text-black font-bold text-[16px] my-4 mx-2">Lượng máu hiến: </Text>
+                                        <Text className="text-black font-normal text-[16px] my-4">{amount_blood}ml</Text>
                                     </View>
                                     <View className="flex-row mx-2">
                                         <Text className="text-red font-normal italic text-[15px] my-4 mx-2">Lưu ý: Thông tin cá nhân và liên lạc được lấy từ hồ sơ, nên kiểm tra kỹ và cập nhật tại hồ sơ trước khi đăng ký. </Text>

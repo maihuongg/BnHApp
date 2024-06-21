@@ -40,7 +40,7 @@ const AppNavigator = () => {
       {/* <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
 
 
-        {/* <Stack.Screen name="Auth" component={AuthStack} /> */}
+        <Stack.Screen name="Auth" component={AuthStack} />
         <Stack.Screen name="Home" component={HomeTab} options={{ headerShown: false }} />
         <Stack.Screen name="Event" component={EventTab} /> 
         <Stack.Screen name="DetailScreen" component={DetailEventScreen} /> 

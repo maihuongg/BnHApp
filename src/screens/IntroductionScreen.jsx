@@ -14,7 +14,8 @@ const IntroductionScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image source={require('../../assets/logo.png')} style={styles.image} />
-   
+      <Text className="font-semibold text-[16px]">Nguyễn Thị Thu Hằng - 20110473</Text>
+      <Text className="font-semibold text-[16px]">Đặng Mai Hương - 20110099</Text>
     </View>
   );
 };

@@ -102,7 +102,7 @@ const SignUpScreen = () => {
                 <Text className="mt-2 ml-4 font-bold">Xác nhận mật khẩu</Text>
                 <View className="flex-row items-center p-2 ml-4 mr-4 mt-2 border-2 border-black rounded-lg">
                     <TextInput
-                        value={password}
+                        value={repassword}
                         onChangeText={(text) => setRepassword(text)}
                         placeholder="Xác nhận mật khẩu"
                         className="w-full text-black"

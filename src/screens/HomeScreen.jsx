@@ -325,7 +325,7 @@ const HomeScreen = () => {
             {/* SỰ kiện */}
             <View className="bg-white">
               <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
-                <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
+                <Image source={dataBestEvent.images} className="w-full h-32 rounded-md mb-2" />
                 <View className="mb-2">
                   <Text className="text-lg font-bold" >{dataBestEvent.eventName}</Text>
                   <View className="flex-row">
