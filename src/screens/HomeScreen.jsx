@@ -324,13 +324,13 @@ const HomeScreen = () => {
             <Text className="text-xl font-bold text-blue px-4 my-2">Sự kiện nổi bật</Text>
             {/* SỰ kiện */}
             <View className="bg-white">
-              <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
-                <Image source={dataBestEvent.images} className="w-full h-32 rounded-md mb-2" />
+              <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-2xl">
+                <Image source={{ uri: dataBestEvent.images }} className="w-full h-32 rounded-md mb-2" />
                 <View className="mb-2">
                   <Text className="text-lg font-bold" >{dataBestEvent.eventName}</Text>
                   <View className="flex-row">
                     <Text>Địa chỉ : </Text>
-                    <Text className="font-bold">{dataBestEvent.address}</Text>
+                    <Text className="font-bold w-[90%]">{dataBestEvent.address}</Text>
                   </View>
                   <View className="flex-row">
                     <Text>Số lượng đăng ký : {count}/</Text>
@@ -358,9 +358,9 @@ const HomeScreen = () => {
               renderItem={({ item, index }) => (
                 <View key={index} style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <TouchableOpacity
-                    style={{ width: 320, height: 350 }}
-                    className="bg-white rounded-lg my-2  shadow-md">
-                    <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
+                    style={{ width: 320, height: 350}}
+                    className="bg-white rounded-lg my-2  shadow-2xl">
+                    <Image source={{ uri: item.images }} className="w-full h-32 rounded-md mb-2 mt-2" />
                     <View className="m-2">
                       <Text className="text-lg font-bold">{item.eventName}</Text>
                       <View className="flex-row">
@@ -386,8 +386,8 @@ const HomeScreen = () => {
               sliderWidth={400}
               itemWidth={320}
               layout={'default'}
-              loop={false}
-              autoplay={false}
+              loop={true}
+              autoplay={true}
               autoplayInterval={3000}
             />
           </View>
@@ -514,7 +514,7 @@ const HomeScreen = () => {
             {/* BV HỢP TÁC */}
             {dataTwoHospital.map((hospital) => (
               <View className="bg-white">
-                <View className="bg-white mx-4 rounded-lg shadow-md my-3">
+                <View className="bg-white mx-4 rounded-3xl shadow-2xl my-3">
                   <TouchableOpacity className="bg-gray mx-auto rounded-full w-52 h-52 mt-2 justify-center items-center ">
                     <Image
                       source={require('../../assets/2.png')}

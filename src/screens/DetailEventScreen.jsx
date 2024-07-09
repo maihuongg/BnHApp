@@ -169,8 +169,12 @@ const DetailEventScreen = () => {
                 if (result === 0) {
                     Alert.alert('Thông báo!', 'Bạn không thể đăng ký vì chưa đủ tối thiểu 90 ngày so với ngày hiến máu gần nhất.')
                 } else {
-                    setModalVisible(false);
-                    setConfirmModal(true);
+                    if (result === -1) {
+                        Alert.alert('Thông báo!', 'Vui lòng kiểm tra lại lịch hẹn, mỗi lịch hẹn yêu cầu cách nhau tối thiểu 90 ngày.')
+                    } else {
+                        setModalVisible(false);
+                        setConfirmModal(true);
+                    }
                 }
             }
         } catch (error) {
@@ -271,8 +275,8 @@ const DetailEventScreen = () => {
                                         )}
                                     </View>
                                 </View>
-                                <View className="ustify-center mx-auto">
-                                    <Text className="text-black text-[16px] font-bold my-2"> Lượng máu </Text>
+                                <View className="flex-row mx-auto">
+                                    <Text className="text-black text-[16px] font-bold my-2"> Lượng máu: </Text>
                                     <SelectList
                                         setSelected={(val) => setAmountblood(val || amount_blood)}
                                         data={amountblood}
@@ -280,16 +284,20 @@ const DetailEventScreen = () => {
                                     />
                                 </View>
 
-                                <TouchableOpacity onPress={handleContinute}>
-                                    <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
-                                        <Text className="text-white font-bold text-[16px]">Tiếp tục</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { setModalVisible(false) }}>
-                                    <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
-                                        <Text className="text-white font-bold text-[16px]">Hủy</Text>
-                                    </View>
-                                </TouchableOpacity>
+                                <View className="flex-row mx-auto">
+                                    <TouchableOpacity onPress={handleContinute}>
+                                        <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
+                                            <Text className="text-white font-bold text-[16px]">Tiếp tục</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => { setModalVisible(false) }}>
+                                        <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
+                                            <Text className="text-white font-bold text-[16px]">Hủy</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+
+
                             </View>
                         </View>
                     </View>
@@ -303,7 +311,7 @@ const DetailEventScreen = () => {
                     }}
                 >
                     <View className="flex-1 bg-rnb justify-center items-center">
-                        <View className="h-[85%] w-[95%]">
+                        <View className="h-[85%] w-[100%]">
                             <ScrollView>
                                 <View className=" mx-2 bg-white p-4 rounded-md ">
                                     <Text className="text-xl font-bold text-blue mb-2">Xác nhận thông tin đăng ký</Text>
@@ -327,7 +335,7 @@ const DetailEventScreen = () => {
                                         <Text className="text-black font-bold text-[16px] my-4 mx-2">Nhóm máu: </Text>
                                         <Text className="text-black font-normal text-[16px] my-4">{userProfile?.bloodgroup}</Text>
                                     </View>
-                                    <View className="flex-row mx-2">
+                                    <View className="flex-row mx-2 w-[60%]">
                                         <Text className="text-black font-bold text-[16px] my-4 mx-2">Địa chỉ liên lạc: </Text>
                                         <Text className="text-black font-normal text-[16px] my-4">{userProfile?.address}</Text>
                                     </View>
@@ -339,7 +347,7 @@ const DetailEventScreen = () => {
                                         <Text className="text-black font-bold text-[16px] my-4 mx-2">Số điện thoại: </Text>
                                         <Text className="text-black font-normal text-[16px] my-4">{userProfile?.phone}</Text>
                                     </View>
-                                    <View className="flex-row mx-2">
+                                    <View className="flex-row mx-2 w-[60%]">
                                         <Text className="text-black font-bold text-[16px] my-4 mx-2">Sự kiện đăng ký: </Text>
                                         <Text className="text-black font-normal text-[16px] my-4">{eventDetail?.eventName}</Text>
                                     </View>
@@ -354,16 +362,19 @@ const DetailEventScreen = () => {
                                     <View className="flex-row mx-2">
                                         <Text className="text-red font-normal italic text-[15px] my-4 mx-2">Lưu ý: Thông tin cá nhân và liên lạc được lấy từ hồ sơ, nên kiểm tra kỹ và cập nhật tại hồ sơ trước khi đăng ký. </Text>
                                     </View>
-                                    <TouchableOpacity onPress={() => setReconfirmModal(true)}>
-                                        <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
-                                            <Text className="text-white font-bold text-[16px]">Xác nhận</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => { setConfirmModal(false) }}>
-                                        <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
-                                            <Text className="text-white font-bold text-[16px]">Hủy</Text>
-                                        </View>
-                                    </TouchableOpacity>
+                                    <View className="flex-row mx-auto">
+                                        <TouchableOpacity onPress={() => setReconfirmModal(true)}>
+                                            <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
+                                                <Text className="text-white font-bold text-[16px]">Xác nhận</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { setConfirmModal(false) }}>
+                                            <View className="justify-center bg-blue mx-auto my-4 p-3 rounded-md">
+                                                <Text className="text-white font-bold text-[16px]">Hủy</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+
                                     <Modal
                                         animationType="slide"
                                         transparent={true}
@@ -376,16 +387,19 @@ const DetailEventScreen = () => {
                                             <View className="h-[85%] w-[95%]">
                                                 <View className="mx-2 bg-white p-4 rounded-md flex flex-col items-center">
                                                     <Text className="text-xl font-bold text-blue mb-2 text-center">Bạn có muốn xác nhận hoàn tất đăng ký?</Text>
-                                                    <TouchableOpacity onPress={handleRegisterEvent}>
-                                                        <View className="bg-blue my-2 p-3 rounded-md w-32 justify-center items-center">
-                                                            <Text className="text-white font-bold text-[16px]">Có</Text>
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity onPress={() => setReconfirmModal(false)}>
-                                                        <View className="bg-blue my-2 p-3 rounded-md w-32 justify-center items-center">
-                                                            <Text className="text-white font-bold text-[16px]">Không</Text>
-                                                        </View>
-                                                    </TouchableOpacity>
+                                                    <View className="flex-row mx-auto">
+                                                        <TouchableOpacity onPress={handleRegisterEvent}>
+                                                            <View className="bg-blue my-2 p-3 rounded-md w-32 justify-center items-center">
+                                                                <Text className="text-white font-bold text-[16px]">Có</Text>
+                                                            </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => setReconfirmModal(false)}>
+                                                            <View className="bg-blue my-2 p-3 rounded-md w-32 justify-center items-center">
+                                                                <Text className="text-white font-bold text-[16px]">Không</Text>
+                                                            </View>
+                                                        </TouchableOpacity>
+                                                    </View>
+
                                                 </View>
                                             </View>
                                         </View>

@@ -109,9 +109,9 @@ const InformationScreen = () => {
                 <Image
                     className="w-24 h-24 rounded-full ml-4"
                     source={{ uri: userPro?.images }} ></Image>
-                <View className="flex-column justify-center items-center mx-2 ">
+                <View className="flex-column">
                     <Text className="text-black font-bold text-[18px]"> {userPro?.fullName}</Text>
-                    <Text className="text-black text-[16px]"> {userPro?.address}</Text>
+                    <Text className="text-black text-[16px] w-[55%]"> {userPro?.address}</Text>
                 </View>
             </View>
 
@@ -227,7 +227,7 @@ const InformationScreen = () => {
                     </View>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleThongKe}>
+            {/* <TouchableOpacity onPress={handleThongKe}>
                 <View className="bg-white mx-4 rounded-xl p-4 border-b-[1px] border-semigray-100">
                     <View className="flex-row items-center">
                         <Ionicons name="analytics" size={24} color="black" />
@@ -239,7 +239,7 @@ const InformationScreen = () => {
                         </View>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={handleLogout}>
                 <View className="bg-white mx-4 rounded-xl p-4 border-b-[1px] border-semigray-100">
                     <View className="flex-row items-center">

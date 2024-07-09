@@ -20,7 +20,7 @@ const LichHenScreen = () => {
     const userId = user?._id;
     const accessToken = user?.accessToken;
     const userPro = useSelector((state) => state.user.profile.getUser);
-    const userEventFilter = userPro.history.filter(event => event.status_user === "0");
+    const userEventFilter = userPro.history.filter(event => event.status_user === "-1");
     const [activeItem, setActiveItem] = useState('user');
     const [modalVisible, setModalVisible] = useState(false);
     const handleItemClick = (item) => {

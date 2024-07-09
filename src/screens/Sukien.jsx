@@ -204,12 +204,12 @@ const Sukien = () => {
                     {data.map((result) => (
                         <View className="bg-white">
                             <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
-                                <Image source={require('../../assets/1.png')} className="w-full h-32 rounded-md mb-2" />
+                                <Image source={{ uri: result.images }} className="w-full h-32 rounded-md mb-2" />
                                 <View className="mb-2">
                                     <Text className="text-lg font-bold" >{result.eventName}</Text>
                                     <View className="flex-row">
                                         <Text>Địa chỉ : </Text>
-                                        <Text className="font-bold">{result.address}</Text>
+                                        <Text className="font-bold w-[90%]">{result.address}</Text>
                                     </View>
                                     <View className="flex-row">
                                         <Text>Số lượng đăng ký : {result.listusers.count}/</Text>

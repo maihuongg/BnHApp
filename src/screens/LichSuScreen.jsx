@@ -11,9 +11,10 @@ import {
     userprofileFailed,
 } from "../redux/userSlice";
 import Certificate from './Certificate';
-import * as Sharing from 'expo-sharing';
 import { captureRef } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
+import * as Sharing from 'expo-sharing';
+
 const LichSuScreen = () => {
     const user = useSelector((state) => state.auth.login.currentUser);
     const userId = user?._id;
@@ -75,41 +76,7 @@ const LichSuScreen = () => {
         setSelectedRecord(null);
     };
 
-    // const drawCertificate = async (canvas) => {
-    //     if (canvas) {
-    //         const ctx = canvas.getContext('2d');
-    //         const img = new CanvasImage(canvas);
-    //         img.src = require('../../assets/certificate.png'); // Corrected path to the image file
-
-    //         img.addEventListener('load', () => {
-    //             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-    //             ctx.font = 'bold 24px Arial';
-    //             ctx.fillStyle = 'black';
-    //             ctx.fillText(`${userPro.fullName}`, 350, 250);
-
-    //             // Draw other text lines from record
-    //             ctx.font = '20px Arial';
-    //             ctx.fillStyle = 'black';
-    //             ctx.fillText(`Ông/bà: `, 250, 250);
-    //             ctx.fillText(`Đã tham gia "${selectedRecord.eventName}"`, 180, 300);
-    //             ctx.fillText(`Ngày hiến máu: ${moment(selectedRecord.date).format('DD-MM-YYYY')} `, 180, 350);
-    //             ctx.fillText(`Lượng máu đã hiến: ${selectedRecord.amount_blood} ml.`, 500, 350);
-    //         });
-    //     }
-    // };
-
-
-    // const handleDownloadImage = async () => {
-    //     const canvas = certificateRef.current;
-    //     if (canvas) {
-    //         const dataUrl = await canvas.toDataURL();
-    //         const link = document.createElement('a');
-    //         link.download = 'e-certificate.png';
-    //         link.href = dataUrl;
-    //         link.click();
-    //     }
-    // };
+   
 
     const requestMediaLibraryPermission = async () => {
         try {
@@ -131,12 +98,27 @@ const LichSuScreen = () => {
             const permissionGranted = await requestMediaLibraryPermission();
             if (!permissionGranted) return;
 
+            console.log("certificateRef",certificateRef.current);
+
             if (certificateRef.current) {
                 const uri = await captureRef(certificateRef, {
                     format: 'png',
                     quality: 1,
                 });
 
+                console.log("uri",uri);
+
+
+                // Save the image to media library
+                const asset = await MediaLibrary.createAssetAsync(uri);
+                const album = await MediaLibrary.getAlbumAsync('Download');
+                if (album === null) {
+                    await MediaLibrary.createAlbumAsync('Download', asset, false);
+                } else {
+                    await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+                }
+
+                // Share the image
                 await Sharing.shareAsync(uri);
             } else {
                 console.warn('certificateRef is null or undefined');
@@ -145,7 +127,7 @@ const LichSuScreen = () => {
             console.error('Failed to capture view snapshot:', error);
         }
     };
-    
+
 
     return (
         <View className="flex-1">
@@ -178,7 +160,7 @@ const LichSuScreen = () => {
                                     <View className="flex-row justify-center">
                                         <TouchableOpacity className="mr-2" onPress={() => handleViewCertificate(donation)}>
                                             <View className="bg-blue mx-auto items-center justify-center rounded-md my-2">
-                                                <Text className="text-white font-bold p-3 mx-3 text-[16px]">Xem</Text>
+                                                <Text className="text-white font-bold p-3 mx-3 text-[12px]">Xem</Text>
                                             </View>
                                         </TouchableOpacity>
 
@@ -201,6 +183,9 @@ const LichSuScreen = () => {
                         <View className="flex-1 bg-rnb justify-center items-center">
                             <View className="h-[50%] w-[95%]">
                                 {selectedRecord && <View ref={certificateRef}><Certificate record={selectedRecord} userPro={userPro} /></View>}
+
+                            </View>
+                            <View className="flex-row">
                                 <Button title="Download" onPress={handleDownloadImage} />
                                 <Button title="Cancel" onPress={handleCancel} />
                             </View>
