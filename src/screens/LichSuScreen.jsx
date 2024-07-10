@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, ScrollView, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, ScrollView, Modal, TouchableOpacity, Alert } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
@@ -11,10 +11,9 @@ import {
     userprofileFailed,
 } from "../redux/userSlice";
 import Certificate from './Certificate';
+import * as Sharing from 'expo-sharing';
 import { captureRef } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
-import * as Sharing from 'expo-sharing';
-
 const LichSuScreen = () => {
     const user = useSelector((state) => state.auth.login.currentUser);
     const userId = user?._id;
@@ -76,41 +75,30 @@ const LichSuScreen = () => {
         setSelectedRecord(null);
     };
 
-   
+    const [albums, setAlbums] = useState(null);
+    const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
 
-    const requestMediaLibraryPermission = async () => {
-        try {
-            const { status } = await MediaLibrary.requestPermissionsAsync();
-            if (status !== 'granted') {
-                console.log('Permission to access media library denied');
-                return false;
-            }
-            return true;
-        } catch (error) {
-            console.error('Error requesting media library permission:', error);
-            return false;
+    async function getAlbums() {
+        if (permissionResponse.status !== 'granted') {
+            await requestPermission();
         }
+        const fetchedAlbums = await MediaLibrary.getAlbumsAsync({
+            includeSmartAlbums: true,
+        });
+        setAlbums(fetchedAlbums);
     };
 
     const handleDownloadImage = async () => {
         try {
-            // Request permission to access media library
-            const permissionGranted = await requestMediaLibraryPermission();
-            if (!permissionGranted) return;
-
-            console.log("certificateRef",certificateRef.current);
-
             if (certificateRef.current) {
-                const uri = await captureRef(certificateRef, {
+                const uri = await captureRef(certificateRef.current, {
                     format: 'png',
                     quality: 1,
                 });
 
-                console.log("uri",uri);
-
-
                 // Save the image to media library
                 const asset = await MediaLibrary.createAssetAsync(uri);
+                Alert.alert('Thông báo', 'Đã tải ảnh thành công, vui long kiểm tra lại album ảnh.');
                 const album = await MediaLibrary.getAlbumAsync('Download');
                 if (album === null) {
                     await MediaLibrary.createAlbumAsync('Download', asset, false);
@@ -118,8 +106,10 @@ const LichSuScreen = () => {
                     await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
                 }
 
+                
                 // Share the image
                 await Sharing.shareAsync(uri);
+                
             } else {
                 console.warn('certificateRef is null or undefined');
             }
@@ -182,7 +172,7 @@ const LichSuScreen = () => {
                     >
                         <View className="flex-1 bg-rnb justify-center items-center">
                             <View className="h-[50%] w-[95%]">
-                                {selectedRecord && <View ref={certificateRef}><Certificate record={selectedRecord} userPro={userPro} /></View>}
+                                {selectedRecord && <View><Certificate ref={certificateRef} record={selectedRecord} userPro={userPro} /></View>}
 
                             </View>
                             <View className="flex-row">
