@@ -13,7 +13,8 @@ import {
 import Certificate from './Certificate';
 import * as Sharing from 'expo-sharing';
 import { captureRef } from 'react-native-view-shot';
-import * as MediaLibrary from 'expo-media-library';
+import * as FileSystem from 'expo-file-system';
+
 const LichSuScreen = () => {
     const user = useSelector((state) => state.auth.login.currentUser);
     const userId = user?._id;
@@ -76,18 +77,36 @@ const LichSuScreen = () => {
     };
 
     const [albums, setAlbums] = useState(null);
-    const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
+  
+    // const handleDownloadImage = async () => {
+    //     try {
+    //         if (certificateRef.current) {
+    //             const uri = await captureRef(certificateRef.current, {
+    //                 format: 'png',
+    //                 quality: 1,
+    //             });
 
-    async function getAlbums() {
-        if (permissionResponse.status !== 'granted') {
-            await requestPermission();
-        }
-        const fetchedAlbums = await MediaLibrary.getAlbumsAsync({
-            includeSmartAlbums: true,
-        });
-        setAlbums(fetchedAlbums);
-    };
+    //             // Save the image to media library
+    //             const asset = await MediaLibrary.createAssetAsync(uri);
+    //             Alert.alert('Thông báo', 'Đã tải ảnh thành công, vui long kiểm tra lại album ảnh.');
+    //             const album = await MediaLibrary.getAlbumAsync('Download');
+    //             if (album === null) {
+    //                 await MediaLibrary.createAlbumAsync('Download', asset, false);
+    //             } else {
+    //                 await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+    //             }
 
+                
+    //             // Share the image
+    //             await Sharing.shareAsync(uri);
+                
+    //         } else {
+    //             console.warn('certificateRef is null or undefined');
+    //         }
+    //     } catch (error) {
+    //         console.error('Failed to capture view snapshot:', error);
+    //     }
+    // };
     const handleDownloadImage = async () => {
         try {
             if (certificateRef.current) {
@@ -96,20 +115,14 @@ const LichSuScreen = () => {
                     quality: 1,
                 });
 
-                // Save the image to media library
-                const asset = await MediaLibrary.createAssetAsync(uri);
-                Alert.alert('Thông báo', 'Đã tải ảnh thành công, vui long kiểm tra lại album ảnh.');
-                const album = await MediaLibrary.getAlbumAsync('Download');
-                if (album === null) {
-                    await MediaLibrary.createAlbumAsync('Download', asset, false);
-                } else {
-                    await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
-                }
+                const fileUri = FileSystem.documentDirectory + 'certificate.png';
+                await FileSystem.copyAsync({ from: uri, to: fileUri });
 
-                
+                Alert.alert('Thông báo', 'Đã tải ảnh thành công, vui lòng kiểm tra lại album ảnh.');
+
                 // Share the image
                 await Sharing.shareAsync(uri);
-                
+
             } else {
                 console.warn('certificateRef is null or undefined');
             }
@@ -134,26 +147,23 @@ const LichSuScreen = () => {
             <View className="p-4">
                 <View className="overflow-hidden border border-gray-300 rounded-lg">
                     <View className="flex-row bg-gray-200 p-2 border-b border-gray-300">
-                        <Text className="w-1/4 font-bold text-center">Tên sự kiện</Text>
-                        <Text className="w-1/4 font-bold text-center">Địa chỉ</Text>
-                        <Text className="w-1/4 font-bold text-center">Ngày hiến máu</Text>
-                        <Text className="w-1/4 font-bold text-center">Xem e-Certificate</Text>
-                    </View>
+                        <Text className="w-1/3 font-bold border-r border-gray-300 text-left">Sự kiện</Text>
+                        <Text className="w-2/3 font-bold text-center">Chi tiết</Text>
+                        </View>
 
                     {userEventFilter.length > 0 ? (
                         userEventFilter.map((donation, index) => (
-                            <View key={index} className={`flex-row p-2 ${index % 2 === 0 ? 'bg-gray-100' : ''}`}>
-                                <Text className="w-1/4 text-center">{donation.eventName}</Text>
-                                <Text className="w-1/4 text-center">{donation.address_event}</Text>
-                                <Text className="w-1/4 text-center">{moment(donation.date).format('DD-MM-YYYY')}</Text>
-                                <View className="w-1/4 text-center">
-                                    <View className="flex-row justify-center">
+                            <View key={index} className={`flex-row p-1 ${index % 2 === 0 ? 'bg-gray-100' : ''}`}>
+                                <Text className="w-1/3 text-left border-r border-gray-300">{donation.eventName}</Text>
+                                <View className="w-2/3 mx-2">
+                                    <Text className="text-left"><Text className="font-bold">Địa chỉ: </Text>{donation.address_event}</Text>
+                                    <Text className="text-left"><Text className="font-bold">Ngày hiến máu: </Text> {moment(donation.date).format('DD-MM-YYYY')}</Text>
+                                    <View className="flex-row justify-center my-1">
                                         <TouchableOpacity className="mr-2" onPress={() => handleViewCertificate(donation)}>
-                                            <View className="bg-blue mx-auto items-center justify-center rounded-md my-2">
-                                                <Text className="text-white font-bold p-3 mx-3 text-[12px]">Xem</Text>
+                                            <View className="bg-blue mx-auto items-center justify-center rounded-md">
+                                                <Text className="text-white font-bold p-3 mx-3 text-[12px]">Xem e-certificate</Text>
                                             </View>
                                         </TouchableOpacity>
-
                                     </View>
                                 </View>
                             </View>
