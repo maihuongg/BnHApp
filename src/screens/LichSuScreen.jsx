@@ -14,6 +14,8 @@ import Certificate from './Certificate';
 import * as Sharing from 'expo-sharing';
 import { captureRef } from 'react-native-view-shot';
 import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+import * as Permissions from 'expo-permissions';
 
 const LichSuScreen = () => {
     const user = useSelector((state) => state.auth.login.currentUser);
@@ -77,7 +79,7 @@ const LichSuScreen = () => {
     };
 
     const [albums, setAlbums] = useState(null);
-  
+
     // const handleDownloadImage = async () => {
     //     try {
     //         if (certificateRef.current) {
@@ -96,10 +98,10 @@ const LichSuScreen = () => {
     //                 await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
     //             }
 
-                
+
     //             // Share the image
     //             await Sharing.shareAsync(uri);
-                
+
     //         } else {
     //             console.warn('certificateRef is null or undefined');
     //         }
@@ -116,8 +118,13 @@ const LichSuScreen = () => {
                 });
 
                 const fileUri = FileSystem.documentDirectory + 'certificate.png';
+                console.log ('fileUri',fileUri)
                 await FileSystem.copyAsync({ from: uri, to: fileUri });
-
+                await FileSystem.moveAsync({
+                    from: uri,
+                    to: fileUri,
+                });
+               
                 Alert.alert('Thông báo', 'Đã tải ảnh thành công, vui lòng kiểm tra lại album ảnh.');
 
                 // Share the image
@@ -149,7 +156,7 @@ const LichSuScreen = () => {
                     <View className="flex-row bg-gray-200 p-2 border-b border-gray-300">
                         <Text className="w-1/3 font-bold border-r border-gray-300 text-left">Sự kiện</Text>
                         <Text className="w-2/3 font-bold text-center">Chi tiết</Text>
-                        </View>
+                    </View>
 
                     {userEventFilter.length > 0 ? (
                         userEventFilter.map((donation, index) => (

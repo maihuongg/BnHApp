@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from Expo pack
 import { Provider } from 'react-redux'; // Import Provider from redux
 import { PersistGate } from 'redux-persist/integration/react'; // Import PersistGate from redux-persist
 import * as Notifications from 'expo-notifications';
+import { AppRegistry, LogBox } from 'react-native';
 
 // Import screens
 import HomeScreen from './src/screens/HomeScreen';
@@ -32,6 +33,7 @@ const Stack = createStackNavigator();
 import * as Device from 'expo-device';
 import { usePushNotifications } from './src/utils/pushNotification';
 import MapViewScreen from './src/screens/MapView';
+LogBox.ignoreAllLogs();
 
 const AppNavigator = () => {
   return (

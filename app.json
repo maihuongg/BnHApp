@@ -25,7 +25,7 @@
         "useNextNotificationsApi": true
       },
       "googleServicesFile": "google-services.json",
-      "package": "huong.BnHAndroid"
+      "package": "com.BnHnotifications"
     },
     "web": {
       "favicon": "./assets/favicon.png"
