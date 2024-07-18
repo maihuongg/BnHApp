@@ -202,14 +202,14 @@ const Sukien = () => {
                 </View>
                 <ScrollView>
                     {data.map((result) => (
-                        <View className="bg-white">
+                        <View className="bg-[#F2F2F2]">
                             <TouchableOpacity className="bg-white rounded-lg px-4 mx-4 my-2 shadow-md">
-                                <Image source={{ uri: result.images }} className="w-full h-32 rounded-md mb-2" />
+                                <Image source={{ uri: result.images }} className="w-full h-32 mt-4 rounded-md mb-2" />
                                 <View className="mb-2">
                                     <Text className="text-lg font-bold" >{result.eventName}</Text>
                                     <View className="flex-row">
                                         <Text>Địa chỉ : </Text>
-                                        <Text className="font-bold w-[90%]">{result.address}</Text>
+                                        <Text className="font-bold w-[85%] justify-center">{result.address}</Text>
                                     </View>
                                     <View className="flex-row">
                                         <Text>Số lượng đăng ký : {result.listusers.count}/</Text>

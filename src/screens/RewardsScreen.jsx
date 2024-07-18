@@ -143,19 +143,13 @@ const RewardsScreen = () => {
             <View className=" mx-4 my-2">
                 <Text className="font-bold text-blue text-[16px] mr-4 mt-3"> * Các lưu ý về điểm thưởng:</Text>
                 <Text className="font-normal text-[14px] my-1">
-                    + Đăng ký sự kiện để nhận điểm thưởng.
-                </Text>
-                <Text className="font-normal text-[14px] my-1">
-                    + Mỗi lần đăng ký sẽ được 1 điểm thưởng.
+                    + Mỗi lần hoàn thành hiến máu sẽ được 1 điểm thưởng.
                 </Text>
                 <Text className="font-normal text-[14px] my-1">
                     + Điểm thưởng sẽ được làm mới theo chu kỳ 1 năm, bắt đầu mỗi chu kỳ là ngày 1/1 hàng năm.
                 </Text>
                 <Text className="font-normal text-[14px] my-1">
                     + Đạt được các mốc điểm cố định sẽ được phần quà tương ứng.
-                </Text>
-                <Text className="font-normal text-[14px] my-1">
-                    + Nếu hủy lịch hẹn thì điểm thưởng được cộng khi đăng ký sự kiện đó sẽ trừ đi.
                 </Text>
                 <Text className="font-normal text-[14px] my-1">
                     + Quà tặng sẽ được tặng khi đến cơ sở hiến máu.

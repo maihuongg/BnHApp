@@ -238,7 +238,7 @@ const DetailEventScreen = () => {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handeOpenMap}>
-                        <View className="bg-yellow mx-auto items-center justify-center rounded-md my-2">
+                        <View className="bg-yellow items-center justify-center rounded-md my-2 mx-2">
                             <Text className="text-white font-bold p-3 mx-3 text-[16px]">Xem đường đi</Text>
                         </View>
                     </TouchableOpacity>
